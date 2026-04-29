@@ -2,7 +2,9 @@
 
 This is an ongoing collection of tools and resources, gathered for research throughout my personal journey. Feel free to use and share if you find something helpful!
 
-[[_TOC_]]
+## Table of Contents
+- [Literature](#Literature)
+- [Documentation](#Documentation)
 
 ## Literature
 - Search engine
