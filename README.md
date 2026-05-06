@@ -5,6 +5,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 ## Table of Contents
 - [Literature](#Literature)
 - [Documentation](#Documentation)
+- [Learning](#Learning)
 
 ## Literature
 - Search engine
@@ -37,3 +38,16 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Excalidraw](https://excalidraw.com/)
     - [Draw.io](https://www.drawio.com/)
     - [Inkscape](https://inkscape.org/)
+
+## Learning
+- [MIT OpenCourseWare](https://ocw.mit.edu/)
+- [FUN MOOC](https://www.fun-mooc.fr/)
+- [edX](https://www.edx.org/)
+- [Coursera](https://www.coursera.org/)
+- [Udacity](https://www.udacity.com/)
+- [Codecademy](https://www.codecademy.com/)
+- [Cognitive Class](https://cognitiveclass.ai/)
+- [The Carpentries Lessons](https://carpentries.org/lessons/)
+- [UNIVERSE-HPC training materials](https://www.universe-hpc.ac.uk/resources/training-material/)
+- [CodeRefinery lessons](https://coderefinery.org/lessons/)
+- [ARCHER2 Online Training](https://www.archer2.ac.uk/training/online/)
