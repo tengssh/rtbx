@@ -35,6 +35,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Pandoc](https://pandoc.org/app/)
 - Whiteboard/Canvas
     - [Mural](https://www.mural.co/)
+    - [Miro](https://webwhiteboard.com/)
     - [Excalidraw](https://excalidraw.com/)
     - [Draw.io](https://www.drawio.com/)
     - [Inkscape](https://inkscape.org/)
