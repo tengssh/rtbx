@@ -6,6 +6,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [Literature](#Literature)
 - [Documentation](#Documentation)
 - [Learning](#Learning)
+- [Miscellaneous](#Miscellaneous)
 
 ## Literature
 - Search engine
@@ -52,3 +53,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [UNIVERSE-HPC training materials](https://www.universe-hpc.ac.uk/resources/training-material/)
 - [CodeRefinery lessons](https://coderefinery.org/lessons/)
 - [ARCHER2 Online Training](https://www.archer2.ac.uk/training/online/)
+
+## Miscellaneous
+- [Templates](./templates/)
+- [Tips](./tips/)
