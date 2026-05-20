@@ -1,4 +1,4 @@
---- 
+---
 name: DuckDuckGo Bangs
 tags: [search-engine]
 ---
