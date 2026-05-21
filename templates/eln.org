@@ -1,0 +1,19 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       ELN
+#+AUTHOR:      name
+#+LANGUAGE:    en
+#+TAGS: Text(T) Code(C) Visualization(V) Protocol(P) noexport(n)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+#+PROPERTY: header-args:shell :var VARIABLE="VALUE" :results output
+
+* Project overview
+
+* Journal
+** YYYY.MM.DD
+*** Environment
+*** Actions
+*** Milestones
