@@ -5,6 +5,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 ## Table of Contents
 - [Literature](#Literature)
 - [Documentation](#Documentation)
+- [Storage](#Storage)
 - [Learning](#Learning)
 - [Miscellaneous](#Miscellaneous)
 
@@ -40,6 +41,28 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Excalidraw](https://excalidraw.com/)
     - [Draw.io](https://www.drawio.com/)
     - [Inkscape](https://inkscape.org/)
+
+## Storage
+- Repositories
+    - [Github](https://github.com/)
+    - [Gitlab](https://gitlab.com/)
+    - [Codeberg](https://codeberg.org/)
+    - [Software Heritage](https://www.softwareheritage.org/)
+    - [Zenodo](https://zenodo.org/)
+    - [Figshare](https://figshare.com/)
+    - [Open Science Framework](https://osf.io/)
+    - [ArXiv](https://arxiv.org/)
+    - [HAL](https://hal.science/)
+    - [Huggingface](https://huggingface.co/)
+    - [Internet Archive](https://archive.org/)
+- Data formats
+    - [Flexible Image Transport System (FITS)](https://fits.gsfc.nasa.gov/)
+    - [Hierarchical Data Format (HDF)](https://www.hdfgroup.org/solutions/hdf5/)
+- Backup
+    - RAID levels
+    - [rsync](https://rsync.samba.org/)
+    - [Rclone](https://rclone.org/)
+    - [git-annex](https://git-annex.branchable.com/)
 
 ## Learning
 - [MIT OpenCourseWare](https://ocw.mit.edu/)
