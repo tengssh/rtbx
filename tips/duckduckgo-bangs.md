@@ -15,3 +15,4 @@ Here are some useful bangs:
 - `!g`: Google search
 - `!gt`: Google Translate
 - `!yt`: YouTube
+- `!w`: Wikipedia
