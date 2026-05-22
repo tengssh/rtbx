@@ -78,5 +78,6 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [ARCHER2 Online Training](https://www.archer2.ac.uk/training/online/)
 
 ## Miscellaneous
+- [Glossary](./misc/glossary.md)
 - [Templates](./templates/)
 - [Tips](./tips/)
