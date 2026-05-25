@@ -3,6 +3,7 @@
 #+TITLE:       ELN
 #+AUTHOR:      name
 #+LANGUAGE:    en
+#+STARTUP:     indent
 #+TAGS: Text(T) Code(C) Visualization(V) Protocol(P) noexport(n)
 #+OPTIONS: toc:3
 #+EXPORT_SELECT_TAGS: export
