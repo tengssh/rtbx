@@ -8,10 +8,11 @@ tags: [search-engine]
 [DuckDuckGo Bangs](https://duckduckgo.com/bangs) are shortcuts that enable performing search queries on other websites directly from the DuckDuckGo search bar.
 
 Here are some useful bangs:
-- `!camd`, `!camtw`: Cambridge Dictionary
-- `!bang`, `!bangs`: search all bangs
-- `!doi`: Digital Object Identifier (DOI)
 - `!ai`: Duck\.ai
+- `!arxiv`, `!arx`: arXiv
+- `!bang`, `!bangs`: search all bangs
+- `!camd`, `!camtw`: Cambridge Dictionary
+- `!doi`: Digital Object Identifier (DOI)
 - `!g`: Google search
 - `!gt`: Google Translate
 - `!yt`: YouTube
