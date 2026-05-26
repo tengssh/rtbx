@@ -60,9 +60,9 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Hierarchical Data Format (HDF)](https://www.hdfgroup.org/solutions/hdf5/)
 - Backup
     - RAID levels
-    - [rsync](https://rsync.samba.org/)
+    - [Rsync](https://rsync.samba.org/)
     - [Rclone](https://rclone.org/)
-    - [git-annex](https://git-annex.branchable.com/)
+    - [Git-Annex](https://git-annex.branchable.com/)
 
 ## Learning
 - [MIT OpenCourseWare](https://ocw.mit.edu/)
