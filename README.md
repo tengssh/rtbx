@@ -53,6 +53,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Open Science Framework](https://osf.io/)
     - [ArXiv](https://arxiv.org/)
     - [HAL](https://hal.science/)
+    - [Protocols.io](https://www.protocols.io/)
     - [Huggingface](https://huggingface.co/)
     - [Internet Archive](https://archive.org/)
 - Data formats
