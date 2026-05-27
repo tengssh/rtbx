@@ -59,11 +59,12 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - Data formats
     - [Flexible Image Transport System (FITS)](https://fits.gsfc.nasa.gov/)
     - [Hierarchical Data Format (HDF)](https://www.hdfgroup.org/solutions/hdf5/)
-- Backup
+- Data managment
     - RAID levels
     - [Rsync](https://rsync.samba.org/)
     - [Rclone](https://rclone.org/)
     - [Git-Annex](https://git-annex.branchable.com/)
+    - [DataLad](https://www.datalad.org/)
 
 ## Learning
 - [MIT OpenCourseWare](https://ocw.mit.edu/)
