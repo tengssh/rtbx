@@ -5,7 +5,7 @@ tags: [Windows, WSL, PowerShell]
 
 # Compact WSL disk space
 
-As described in a [WSL issue](https://github.com/microsoft/WSL/issues/4699#issuecomment-627133168), the WSL virtual hard disk file (`.vhdx`) that has grown does not automatically shrink back. Therefore, it has to be manually shrunk, as follows:
+As described in the [WSL issue](https://github.com/microsoft/WSL/issues/4699#issuecomment-627133168), the WSL virtual hard disk file (`.vhdx`) that has grown does not automatically shrink back. Therefore, it has to be manually shrunk, as follows:
 
 1. Open PowerShell as Admin
 2. Shut down WSL
