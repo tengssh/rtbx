@@ -34,6 +34,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
         - [RemNote](https://www.remnote.com/)
 - Convertor
     - [FFmpeg](https://ffmpeg.org/)
+    - [ImageMagick](https://imagemagick.org/)
     - [Pandoc](https://pandoc.org/app/)
 - Whiteboard/Canvas
     - [Mural](https://www.mural.co/)
