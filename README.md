@@ -5,6 +5,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 ## Table of Contents
 - [Literature](#Literature)
 - [Documentation](#Documentation)
+- [Computing](#Computing)
 - [Storage](#Storage)
 - [Learning](#Learning)
 - [Miscellaneous](#Miscellaneous)
@@ -42,6 +43,29 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Excalidraw](https://excalidraw.com/)
     - [Draw.io](https://www.drawio.com/)
     - [Inkscape](https://inkscape.org/)
+
+## Computing
+- Command-Line Interface (CLI)
+    - [Vim](https://www.vim.org/about.php)
+    - [GNU Emacs](https://www.gnu.org/software/emacs/)
+    - [Git](https://git-scm.com/)
+- Environment
+    - [Docker](https://www.docker.com/)
+    - [Singularity](https://sylabs.io/singularity/)
+    - [Apptainer](https://apptainer.org/)
+    - [GNU Guix](https://guix.gnu.org/)
+    - [Conda](https://conda.org/)
+    - [Mamba](https://mamba.readthedocs.io/)
+    - [uv](https://docs.astral.sh/uv/)
+    - [Pixi](https://pixi.prefix.dev/)
+- Workflow
+    - [GNU Make](https://www.gnu.org/software/make/)
+    - [Snakemake](https://snakemake.github.io/)
+- Quality
+    - IDE/ADE
+    - Test suite
+    - Linter
+    - CI/CD
 
 ## Storage
 - Repositories
