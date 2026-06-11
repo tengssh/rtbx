@@ -13,8 +13,10 @@
 
 * Project overview
 
+* Resources
+
 * Journal
-** YYYY.MM.DD
+** YYYY.MM.DD hh:mm
 *** Environment
 *** Actions
 *** Milestones
