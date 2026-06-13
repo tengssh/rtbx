@@ -108,3 +108,4 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [Glossary](./misc/glossary.md)
 - [Templates](./templates/)
 - [Tips](./tips/)
+- [Notes](./notes/)
