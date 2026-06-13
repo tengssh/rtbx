@@ -2,7 +2,7 @@
 
 [GNU Emacs](https://www.gnu.org/software/emacs/) is a free and open-source text editor known for its customizability and extensibility. 
 
-[Org-Mode](https://orgmode.org/) is one of the major modes in GNU Emacs. In addition to basic note-taking, Org-Mode also supports to-do lists, computational notebooks, and literate programming, making it ideal for reproducible research.
+[Org-Mode](https://orgmode.org/) is one of the major modes in GNU Emacs. In addition to basic note-taking, Org-Mode also supports to-do lists, computational notebooks, and literate programming, making it ideal for electronic laboratory notebooks.
 
 ### Usage
 - Launch Emacs
