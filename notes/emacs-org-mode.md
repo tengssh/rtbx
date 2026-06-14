@@ -1,10 +1,10 @@
-## Emacs/Org-Mode
+# Emacs/Org-Mode
 
 [GNU Emacs](https://www.gnu.org/software/emacs/) is a free and open-source text editor known for its customizability and extensibility. 
 
 [Org-Mode](https://orgmode.org/) is one of the major modes in GNU Emacs. In addition to basic note-taking, Org-Mode also supports to-do lists, computational notebooks, and literate programming, making it ideal for electronic laboratory notebooks.
 
-### Usage
+## Usage
 - Launch Emacs
     ```bash
     emacs
@@ -58,3 +58,30 @@
             - `check-parens`: check parentheses
             - `quoted-insert` (`C-q`)
             - `term`: terminal
+    - Org-Mode
+        - `C-Ret`: start a new bullet point
+        - `M-arrows`: rearrange items
+        - `M-x`
+            - `org-insert-link` (`C-c C-l`): add links
+            - `org-open-at-point` (`C-c C-o`): open links
+            - `org-toggle-checkbox` (`C-c C-x C-b`): modify checkbox status
+            - `org-todo` (`C-c C-t` or `S-arrows`): modify todo status, priority
+            - `org-schedule` (`C-c C-s`): set schedule
+            - `org-set-tags-command`, `counsel-org-tag` (`C-c C-q`): add or remove tags
+            - `org-set-property` (`C-c C-x p`): set properties
+            - `org-refile` (`C-c C-w`): refile to archive
+            - `org-archive-subtree-default` (`C-c C-x C-a`): directly refile to archive
+            - `org-capture`
+                - `C-c C-c`: finish
+                - `C-c C-w`: refile
+                - `C-c C-k`: abort
+            - `org-toggle-inline-images` (`C-c C-x C-v`): display/hide images
+            - `org-mode-restart`: restart Org-Mode
+        - [Org-Tempo](https://orgmode.org/manual/Structure-Templates.html#FOOT161) (`org-tempo`)
+            - `<-*-Tab`: call template
+            - `C-c '` (org-edit-special): code editing buffer
+        - [Org-Babel](https://orgmode.org/worg/org-contrib/babel/intro.html)
+            - `C-c C-c`: execute code block
+            - `,*`: escape headlines
+            - `org-babel-tangle` (`C-c C-v t`): tangle code blocks to the target file, e.g. `emacs-lisp` to `:tangle init.el`
+            - `C-u C-c C-v t`: tangle only the selected code block
