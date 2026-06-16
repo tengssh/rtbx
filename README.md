@@ -8,6 +8,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [Computing](#Computing)
 - [Storage](#Storage)
 - [Learning](#Learning)
+- [Communities](#Communities)
 - [Miscellaneous](#Miscellaneous)
 
 ## Literature
@@ -103,6 +104,22 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [UNIVERSE-HPC training materials](https://www.universe-hpc.ac.uk/resources/training-material/)
 - [CodeRefinery lessons](https://coderefinery.org/lessons/)
 - [ARCHER2 Online Training](https://www.archer2.ac.uk/training/online/)
+
+## Communities
+- Open Science & Open Research
+    - [The Turing Way](https://book.the-turing-way.org/)
+    - [Center for Open Science](https://www.cos.io/)
+    - [Open Research Europe](https://open-research-europe.ec.europa.eu/)
+    - [EU Open Research Repository](https://zenodo.org/communities/eu/)
+    - [Nationale Forschungsdateninfrastruktur](https://www.nfdi.de/)
+- Research Software Engineering
+    - [Software Sustainability Institute](https://www.software.ac.uk/)
+    - [Research Software Engineers International](https://researchsoftware.org/)
+    - [The Society of Research Software Engineering](https://society-rse.org/)
+    - [Nordic-RSE](https://nordic-rse.org/)
+    - [Learning and teaching RSE](https://de-rse.org/learn-and-teach/)
+    - [Research Software Alliance](https://www.researchsoft.org/)
+    - [INTERSECT](https://intersect-training.org/)
 
 ## Miscellaneous
 - [Glossary](./misc/glossary.md)
