@@ -58,6 +58,13 @@
             - `check-parens`: check parentheses
             - `quoted-insert` (`C-q`)
             - `term`: terminal
+    - Evil-Mode (`use-package evil`)
+        - `M-x evil-mode`
+        - `Esc`: return to Normal mode
+        - `C-w`: window management
+            - +`v`: vertical split
+            - +`s`: horizontal split
+            - +`c`: close window
     - Org-Mode
         - `C-Ret`: start a new bullet point
         - `M-arrows`: rearrange items
