@@ -65,6 +65,10 @@
             - +`v`: vertical split
             - +`s`: horizontal split
             - +`c`: close window
+    - Ivy-Mode (`use-package ivy`)
+        - Swiper (`use-package swiper`)
+            - `C-s`: search pattern
+        - Ivy-Rich-Mode (`use-package ivy-rich`)
     - Org-Mode
         - `C-Ret`: start a new bullet point
         - `M-arrows`: rearrange items
