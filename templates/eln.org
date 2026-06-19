@@ -7,7 +7,7 @@
 #+TAGS: Text(T) Code(C) Visualization(V) Protocol(P) noexport(n)
 #+OPTIONS: toc:3
 #+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
 #+PROPERTY: header-args:shell :var VARIABLE="VALUE" :results output
 
