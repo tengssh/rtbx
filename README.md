@@ -121,6 +121,9 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Learning and teaching RSE](https://de-rse.org/learn-and-teach/)
     - [Research Software Alliance](https://www.researchsoft.org/)
     - [INTERSECT](https://intersect-training.org/)
+- Sustainability
+    - [Green Algorithms Initiative](https://www.green-algorithms.org/)
+    - [Green Software Foundation](https://greensoftware.foundation/)
 
 ## Miscellaneous
 - [Glossary](./misc/glossary.md)
