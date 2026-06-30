@@ -38,6 +38,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [FFmpeg](https://ffmpeg.org/)
     - [ImageMagick](https://imagemagick.org/)
     - [Pandoc](https://pandoc.org/app/)
+    - [Graphviz](https://graphviz.org/)
 - Whiteboard/Canvas
     - [Mural](https://www.mural.co/)
     - [Miro](https://webwhiteboard.com/)
@@ -105,6 +106,8 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [CodeRefinery lessons](https://coderefinery.org/lessons/)
 - [ARCHER2 Online Training](https://www.archer2.ac.uk/training/online/)
 - [Digital Research Academy](https://digital-research.academy/)
+- [Expert Training in High-Performance Computing](https://www.hlrs.de/training/hpc-training)
+- [Open Hackathons - Technical Resources](https://www.openhackathons.org/s/technical-resources)
 
 ## Communities
 - Open Science & Open Research
@@ -112,7 +115,9 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Center for Open Science](https://www.cos.io/)
     - [Open Research Europe](https://open-research-europe.ec.europa.eu/)
     - [EU Open Research Repository](https://zenodo.org/communities/eu/)
+    - [European Open Science Cloud](https://open-science-cloud.ec.europa.eu/)
     - [Nationale Forschungsdateninfrastruktur](https://www.nfdi.de/)
+    - [ReproducibiliTea](https://reproducibilitea.org/)
 - Research Software Engineering
     - [Software Sustainability Institute](https://www.software.ac.uk/)
     - [Research Software Engineers International](https://researchsoftware.org/)
