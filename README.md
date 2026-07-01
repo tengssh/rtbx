@@ -117,6 +117,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [EU Open Research Repository](https://zenodo.org/communities/eu/)
     - [European Open Science Cloud](https://open-science-cloud.ec.europa.eu/)
     - [Nationale Forschungsdateninfrastruktur](https://www.nfdi.de/)
+    - [Global Federation of Reproducibility Networks (GFRN)](https://reproducibility.global/)
     - [ReproducibiliTea](https://reproducibilitea.org/)
 - Research Software Engineering
     - [Software Sustainability Institute](https://www.software.ac.uk/)
