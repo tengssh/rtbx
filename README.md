@@ -83,9 +83,10 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Protocols.io](https://www.protocols.io/)
     - [Huggingface](https://huggingface.co/)
     - [Internet Archive](https://archive.org/)
-- Data formats
+- Data specifications
     - [Flexible Image Transport System (FITS)](https://fits.gsfc.nasa.gov/)
     - [Hierarchical Data Format (HDF)](https://www.hdfgroup.org/solutions/hdf5/)
+    - [Research Object Crate (RO-Crate)](https://www.researchobject.org/ro-crate/)
 - Data managment
     - RAID levels
     - [Rsync](https://rsync.samba.org/)
