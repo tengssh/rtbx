@@ -27,6 +27,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - Note-taking
     - Markdown
         - [HackMD](https://hackmd.io/)
+        - [LiaScript LiveEditor](https://liascript.github.io/LiveEditor/)
     - LaTeX
         - [Overleaf](https://www.overleaf.com/)
     - Computational notebooks
