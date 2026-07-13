@@ -1,8 +1,8 @@
-## Pixi basics
+# Pixi basics
 
 [Pixi](https://pixi.prefix.dev/) is a cross-platform, multi-language package manager. Derived from [Conda](https://conda.org/) and [uv](https://docs.astral.sh/uv/), Pixi can be used to install and manage packages in various languages, as well as to create virtual environments for specific software development needs. Additionally, Pixi provides lockfiles and a simple configuration interface, enabling consistent environments and predefined tasks for reproducible workflows.
 
-### Install Pixi
+## Install Pixi
 - Install in a Linux terminal
     ```bash
     curl -fsSL https://pixi.sh/install.sh | PIXI_HOME=/opt/pixi PIXI_NO_PATH_UPDATE=1 sh
@@ -14,7 +14,7 @@
     export PATH="/opt/pixi/bin:$PATH"
     ```
 
-### Use Pixi
+## Use Pixi
 - Initialization
     ```bash
     pixi init [OPTIONS] PROJECT_FOLDER
