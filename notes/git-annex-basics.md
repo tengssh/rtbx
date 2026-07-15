@@ -135,7 +135,9 @@
             ```
         - Register URLs
             ```bash
-            git-annex registerurl $(git-annex lookupkey DATA) URL
+            KEY=$(basename `readlink DATA`)
+            #KEY=$(git-annex lookupkey DATA)
+            git-annex registerurl $KEY URL
             ```
         - Get annexed files
             ```bash
@@ -213,7 +215,7 @@
         ```
     - Archive git repository
         ```bash
-        git archive --format=tar.gz --prefix REPO_NAME/ -o archive.tgz HEAD
+        git archive --format=tar.gz --prefix REPO_NAME/ -o ../archive.tgz HEAD
         ```
 
 ## References
