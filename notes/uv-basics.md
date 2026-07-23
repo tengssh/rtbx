@@ -112,7 +112,7 @@
 - [Cache](https://docs.astral.sh/uv/concepts/cache/)
     - Show cache directory
         ```bash
-	uv cache dir
+        uv cache dir
         ```
         - [Note]: use `export UV_CACHE_DIR="NEW_CACHE_PATH"` to change the cache directory
     - Clean cache
