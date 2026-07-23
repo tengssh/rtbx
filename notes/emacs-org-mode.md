@@ -58,6 +58,7 @@
             - `check-parens`: check parentheses
             - `quoted-insert` (`C-q`)
             - `term`: terminal
+            - `toggle-truncate-lines` (`C-x x t`): enable/disable truncating lines
     - Evil-Mode (`use-package evil`)
         - `M-x evil-mode`
         - `Esc`: return to Normal mode
