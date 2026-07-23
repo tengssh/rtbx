@@ -113,8 +113,8 @@
     - Show cache directory
         ```bash
 	uv cache dir
-	```
-	- [Note]: use `export UV_CACHE_DIR="NEW_CACHE_PATH"` to change the cache directory
+        ```
+        - [Note]: use `export UV_CACHE_DIR="NEW_CACHE_PATH"` to change the cache directory
     - Clean cache
         ```bash
         uv cache clean
