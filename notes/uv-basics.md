@@ -22,9 +22,9 @@
         ```bash
         uv pip install numpy matplotlib [OPTIONS]
         ```
-	- [OPTIONS]
-	    - `--no-cache`: no cache
-	    - `--cache-dir PATH`: set a specified cache directory
+        - [OPTIONS]
+            - `--no-cache`: no cache
+            - `--cache-dir PATH`: set a specified cache directory
     - Deactivate a virtual environment
         ```bash
         deactivate
