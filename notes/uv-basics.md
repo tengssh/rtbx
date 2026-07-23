@@ -20,8 +20,11 @@
         ```
     - Install packages via [the `pip` interface](https://docs.astral.sh/uv/pip/)
         ```bash
-        uv pip install numpy matplotlib
+        uv pip install numpy matplotlib [OPTIONS]
         ```
+	- [OPTIONS]
+	    - `--no-cache`: no cache
+	    - `--cache-dir PATH`: set a specified cache directory
     - Deactivate a virtual environment
         ```bash
         deactivate
@@ -106,7 +109,13 @@
             ```bash
             uv tool install pycowsay
             ```
-- Clean cache
-    ```bash
-    uv cache clean
-    ```
+- [Cache](https://docs.astral.sh/uv/concepts/cache/)
+    - Show cache directory
+        ```bash
+	uv cache dir
+	```
+	- [Note]: use `export UV_CACHE_DIR="NEW_CACHE_PATH"` to change the cache directory
+    - Clean cache
+        ```bash
+        uv cache clean
+        ```
