@@ -72,6 +72,10 @@
     - Org-Mode
         - `C-Ret`: start a new bullet point
         - `M-arrows`: rearrange items
+        - `C-c C-e`: export
+            - `h h`: HTML file
+            - `l l`: LaTeX file
+            - `l p`: PDF file
         - `M-x`
             - `org-insert-link` (`C-c C-l`): add links
             - `org-open-at-point` (`C-c C-o`): open links
