@@ -23,7 +23,7 @@
         - https://orgmode.org/worg/org-contrib/
 - Quick-start
     - Key abbreviations & keybindings
-        - `C` (Ctrl), `M` (Alt), `Spc` (space), `Ret` (Enter), `S` (Shift)
+        - `C` (Ctrl), `M` (Alt), `SPC` (space), `RET` (Enter), `S` (Shift)
         - `C-x` refers to pressing and holding the Ctrl key, then pressing the x key.
         -  `C-x C-y` refers to pressing and holding the Ctrl key, then pressing the x key and releasing it, then pressing the y key.
     - Fundamental mode
@@ -37,7 +37,7 @@
             - Current working files
             - `*Message*`: check all buffer messages (`q`: leave buffer)
         - `C-x s`: save buffer
-        - `C-Spc`: set the marker
+        - `C-SPC`: set the marker
         - `M-w`: copy
         - `C-w`: cut
         - `C-y`: paste
@@ -61,7 +61,7 @@
             - `toggle-truncate-lines` (`C-x x t`): enable/disable truncating lines
     - Evil-Mode (`use-package evil`)
         - `M-x evil-mode`
-        - `Esc`: return to Normal mode
+        - `ESC`: return to Normal mode
         - `C-w`: window management
             - +`v`: vertical split
             - +`s`: horizontal split
@@ -69,9 +69,14 @@
     - Ivy-Mode (`use-package ivy`)
         - Swiper (`use-package swiper`)
             - `C-s`: search pattern
+                - `M-q`: query replace
+                    - `y`|`SPC`: replace one match
+                    - `n`: skip to next
+                    - `q`|`RET`: quit
+                    - `!`: replace all remaining matches
         - Ivy-Rich-Mode (`use-package ivy-rich`)
     - Org-Mode
-        - `C-Ret`: start a new bullet point
+        - `C-RET`: start a new bullet point
         - `M-arrows`: rearrange items
         - `C-c C-e`: export
             - `h h`: HTML file
