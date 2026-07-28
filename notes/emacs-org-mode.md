@@ -78,6 +78,10 @@
     - Org-Mode
         - `C-RET`: start a new bullet point
         - `M-arrows`: rearrange items
+        - Headline navigation
+            - `C-c C-j`: interactive outline view
+            - `C-c C-p`: go to the previous headline
+            - `C-c C-n`: go to the next headline
         - `C-c C-e`: export
             - `h h`: HTML file
             - `l l`: LaTeX file
