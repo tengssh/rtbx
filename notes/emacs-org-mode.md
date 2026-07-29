@@ -96,7 +96,7 @@
             - `org-set-property` (`C-c C-x p`): set properties
             - `org-refile` (`C-c C-w`): refile to archive
             - `org-archive-subtree-default` (`C-c C-x C-a`): directly refile to archive
-            - `org-capture`
+            - `org-capture` (`C-c c`)
                 - `C-c C-c`: finish
                 - `C-c C-w`: refile
                 - `C-c C-k`: abort
