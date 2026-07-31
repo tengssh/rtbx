@@ -75,6 +75,11 @@
                     - `q`|`RET`: quit
                     - `!`: replace all remaining matches
         - Ivy-Rich-Mode (`use-package ivy-rich`)
+    - Magit (`use-package magit`)
+        - `C-x g`: magit status
+            - `s`: stage
+            - `u`: unstage
+            - `c c`: commit
     - Org-Mode
         - `C-RET`: start a new bullet point
         - `M-arrows`: rearrange items
