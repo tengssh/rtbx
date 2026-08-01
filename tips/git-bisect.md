@@ -12,7 +12,7 @@ tags: [Git, Shell]
 git bisect start
 ```
 
-2. Find the not working commit
+2. Find the not-working commit
 ```bash
 # working commit
 git bisect good HASH
