@@ -1,0 +1,19 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       Cornell notes
+#+AUTHOR:      name
+#+LANGUAGE:    en
+#+STARTUP:     indent
+#+TAGS: Preview(P) Questions(Q) Read(R) Recite(T) Reflect(F) Review(V)
+#+TAGS: Code(C) Visualization(V) noexport(n)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+#+PROPERTY: header-args:python :async yes :python /opt/python/python3 
+
+* Summary                                                    :Reflect:Review:
+
+* Cue                                                      :Questions:Recite:
+
+* Notes                                                    :Preview:Read:
