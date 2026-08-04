@@ -51,12 +51,23 @@
         - `--volume=HOST_DIR:DOCKER_DIR`: mount storage
 - List running containers
     ```bash
-    docker container ls
+    docker container ls [OPTIONS]
+    docker ps [OPTIONS]
     ```
-- Remove image/container
+    - [OPTIONS]
+        - `--all`: list all recent containers
+- Remove image
     ```bash
+    docker image rm [OPTIONS] REPOSITORY
+    docker image rm [OPTIONS] IMAGE_ID
     docker rmi [OPTIONS] IMG:TAG
-    docker rm [OPTIONS] CONTAINER
+    ```
+    - [OPTIONS]
+        - `--force` (`-f`): force 
+- Remove container
+    ```bash
+    docker container rm [OPTIONS] CONTAINER_ID
+    docker rm [OPTIONS] CONTAINER_ID
     ```
     - [OPTIONS]
         - `--force` (`-f`): force removal
