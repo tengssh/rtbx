@@ -12,8 +12,9 @@
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
 #+PROPERTY: header-args:python :async yes :python /opt/python/python3 
 
-* Summary                                                    :Reflect:Review:
+* YYYY.MM.DD
+** Summary                                                    :Reflect:Review:
 
-* Cue                                                      :Questions:Recite:
+** Cue                                                      :Questions:Recite:
 
-* Notes                                                    :Preview:Read:
+** Notes                                                    :Preview:Read:
