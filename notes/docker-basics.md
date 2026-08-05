@@ -24,8 +24,10 @@
 ## Use Docker
 - Download images
     ```bash
-    docker pull debian:stable
+    docker pull [OPTIONS] debian:stable
     ```
+    - [OPTIONS]
+        - `--platform=OS/ARCH`: specify a platform
 - List images
     ```bash
     docker images [OPTIONS] IMG
@@ -43,19 +45,40 @@
         ```
 - Start a container
     ```bash
-    docker run [OPTIONS] debian:stable [COMMANDS]
+    docker container run [OPTIONS] IMAGE [COMMANDS]
+    docker run [OPTIONS] IMAGE [COMMANDS]
     ```
     - [OPTIONS]
         - `--rm`: automatically remove the container after use
         - `-it`: interactive terminal
+        - `--name NAME`: assign a name to a container
         - `--volume=HOST_DIR:DOCKER_DIR`: mount storage
+- Build a container
+    - From a [Dockerfile](https://docs.docker.com/reference/dockerfile/)
+        ```bash
+        docker image build -t IMG_NAME PATH_TO_DOCKERFILE
+        ```
+    - Create an image with a renamed tag
+        ```bash
+        docker image tag OLD_NAME NEW_NAME
+        ```
+    - Push to [Docker Hub](https://hub.docker.com/)
+        - Register an account (`USERNAME`)
+        - Login
+            ```bash
+            docker login
+            ```
+        - Push
+            ```bash
+            docker image push USERNAME/IMG:TAG
+            ```
 - List running containers
     ```bash
     docker container ls [OPTIONS]
     docker ps [OPTIONS]
     ```
     - [OPTIONS]
-        - `--all`: list all recent containers
+        - `--all` (`-a`): list all recent containers
 - Remove image
     ```bash
     docker image rm [OPTIONS] REPOSITORY
@@ -66,8 +89,8 @@
         - `--force` (`-f`): force 
 - Remove container
     ```bash
-    docker container rm [OPTIONS] CONTAINER_ID
-    docker rm [OPTIONS] CONTAINER_ID
+    docker container rm [OPTIONS] CONTAINER_ID_NAME
+    docker rm [OPTIONS] CONTAINER_ID_NAME
     ```
     - [OPTIONS]
         - `--force` (`-f`): force removal
@@ -76,11 +99,11 @@
         ```bash
         docker system prune
         ```
-    - Images only
+    - Dangling images only
         ```bash
         docker image prune
         ```
-    - Contianers only
+    - Stopped/unused containers only
         ```bash
         docker container prune
         ```
