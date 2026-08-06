@@ -52,12 +52,19 @@
         - `--rm`: automatically remove the container after use
         - `-it`: interactive terminal
         - `--name NAME`: assign a name to a container
-        - `--volume=HOST_DIR:DOCKER_DIR`: mount storage
+        - [Storage mount options](https://docs.docker.com/engine/storage/)
+            - `--volume=HOST_DIR:DOCKER_DIR` (`-v`): volume mounts
+            - `--mount type=bind,source=/SRC/,target=/DST/`: Bind mounts
+        - `--workdir` (`-w`): set the working directory
+        - `--user=UID:GID` (`-u`): user identity (e.g., `--user=$(id -u):$(id -g)`)
+        - `--entrypoint CMD`: override the entrypoint command
 - Build a container
     - From a [Dockerfile](https://docs.docker.com/reference/dockerfile/)
         ```bash
         docker image build -t IMG_NAME PATH_TO_DOCKERFILE
         ```
+        - Dockerfile examples
+            - https://github.com/nuest/ten-simple-rules-dockerfiles
     - Create an image with a renamed tag
         ```bash
         docker image tag OLD_NAME NEW_NAME
