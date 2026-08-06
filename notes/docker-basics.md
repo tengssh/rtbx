@@ -54,7 +54,7 @@
         - `--name NAME`: assign a name to a container
         - [Storage mount options](https://docs.docker.com/engine/storage/)
             - `--volume=HOST_DIR:DOCKER_DIR` (`-v`): volume mounts
-            - `--mount type=bind,source=/SRC/,target=/DST/`: Bind mounts
+            - `--mount type=bind,source=/SRC/,target=/DST/`: bind mounts
         - `--workdir` (`-w`): set the working directory
         - `--user=UID:GID` (`-u`): user identity (e.g., `--user=$(id -u):$(id -g)`)
         - `--entrypoint CMD`: override the entrypoint command
