@@ -118,3 +118,4 @@
 ## References
 - https://www.fun-mooc.fr/fr/cours/reproducible-research-ii-practices-and-tools-for-managing-comput/
 - https://train.rse.ox.ac.uk/material/HPCu/technology_and_tooling/docker
+- https://carpentries-incubator.github.io/docker-introduction/aio.html
