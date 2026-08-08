@@ -79,6 +79,12 @@
             ```bash
             docker image push USERNAME/IMG:TAG
             ```
+    - Archive images
+        ```bash=
+        docker image save IMG:TAG -o IMG.tar
+        tar cvfz IMG.tar.gz IMG.tar
+        #tar cvfj IMG.tar.bz2 IMG.tar
+        ```
 - List running containers
     ```bash
     docker container ls [OPTIONS]
