@@ -135,6 +135,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 
 ## Miscellaneous
 - [Glossary](./misc/glossary.md)
+- [Quotes](./misc/quotes.md)
 - [Templates](./templates/)
 - [Tips](./tips/)
 - [Notes](./notes/)
