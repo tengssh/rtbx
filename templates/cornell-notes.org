@@ -12,10 +12,25 @@
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
 #+PROPERTY: header-args:python :async yes :python /opt/python/python3 
 
-* YYYY.MM.DD
-** Summary                                                    :Reflect:Review:
+* Subject: Cornell notes
+** Resources
+- ...
+** Keywords
+- X
+- Y
+- Z
+** Time duration: ? hr(s)
+- YYYY.MM.DD: ? hr(s)
+** Prerequisites
+[dependencies]
 
-** Cue                                                      :Questions:Recite:
+* Notes                                                    :Preview:Read:
+** YYYY.MM.DD
+*** Topic1
 
-** Notes                                                    :Preview:Read:
-*** Prerequisites
+* Cue                                                      :Questions:Recite:
+** Q1
+- A1
+
+* Summary                                                    :Reflect:Review:
+- ...
