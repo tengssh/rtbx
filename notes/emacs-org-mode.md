@@ -51,6 +51,7 @@
         - `M-x`: execute commands (with Tab completion)
             - `eval-buffer`: reload configuration
             - `list-packages`: list all packages
+            - `load-file`: load a file (e.g., configuration files)
             - `kill-this-buffer` (`C-x k`)
             - `comment-line` (`C-x C-;`): comment or uncomment
             - `imenu` (`M-g i`): menu items
@@ -59,14 +60,20 @@
             - `quoted-insert` (`C-q`)
             - `term`: terminal
             - `toggle-truncate-lines` (`C-x x t`): enable/disable truncating lines
-    - Evil-Mode (`use-package evil`)
+            - `package-refresh-contents`: refresh the package list (before installing packages)
+    - [Evil-Mode](https://github.com/emacs-evil/evil) (`use-package evil`)
         - `M-x evil-mode`
         - `ESC`: return to Normal mode
         - `C-w`: window management
             - +`v`: vertical split
             - +`s`: horizontal split
             - +`c`: close window
-    - Ivy-Mode (`use-package ivy`)
+    - [gptel](https://github.com/karthink/gptel) (`use-package gptel`)
+        - `M-x gptel-send`: send prompts
+        - `M-x gptel`: open a chat buffer
+        - `C-u M-x gptel-send`: open the settings menu
+    - [Ivy-Mode](https://github.com/abo-abo/swiper) (`use-package ivy`)
+        - Councel (`use-package councel`)
         - Swiper (`use-package swiper`)
             - `C-s`: search pattern
                 - `M-q`: query replace
@@ -74,8 +81,11 @@
                     - `n`: skip to next
                     - `q`|`RET`: quit
                     - `!`: replace all remaining matches
-        - Ivy-Rich-Mode (`use-package ivy-rich`)
-    - Magit (`use-package magit`)
+        - [Ivy-Rich-Mode](https://github.com/yevgnen/ivy-rich) (`use-package ivy-rich`)
+    - [Command-Log-Mode](https://github.com/lewang/command-log-mode) (`use-package command-log-mode` package)
+        - `M-x global-command-log-mode`: enable log-mode globally
+        - `M-x clm/toggle-command-log-buffer` (`C-c o`): display the live command log buffer
+    - [Magit](https://github.com/magit/magit) (`use-package magit`)
         - `C-x g`: magit status
             - `s`: stage
             - `u`: unstage
