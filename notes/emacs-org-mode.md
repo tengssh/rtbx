@@ -23,7 +23,7 @@
         - https://orgmode.org/worg/org-contrib/
 - Quick-start
     - Key abbreviations & keybindings
-        - `C` (Ctrl), `M` (Alt), `SPC` (space), `RET` (Enter), `S` (Shift)
+        - `C` (Ctrl), `M` (Alt), `SPC` (Space), `RET` (Enter), `S` (Shift)
         - `C-x` refers to pressing and holding the Ctrl key, then pressing the x key.
         -  `C-x C-y` refers to pressing and holding the Ctrl key, then pressing the x key and releasing it, then pressing the y key.
     - Fundamental mode
@@ -82,7 +82,7 @@
                     - `q`|`RET`: quit
                     - `!`: replace all remaining matches
         - [Ivy-Rich-Mode](https://github.com/yevgnen/ivy-rich) (`use-package ivy-rich`)
-    - [Command-Log-Mode](https://github.com/lewang/command-log-mode) (`use-package command-log-mode` package)
+    - [Command-Log-Mode](https://github.com/lewang/command-log-mode) (`use-package command-log-mode`)
         - `M-x global-command-log-mode`: enable log-mode globally
         - `M-x clm/toggle-command-log-buffer` (`C-c o`): display the live command log buffer
     - [Magit](https://github.com/magit/magit) (`use-package magit`)
