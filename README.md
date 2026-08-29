@@ -30,6 +30,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
         - [LiaScript LiveEditor](https://liascript.github.io/LiveEditor/)
     - LaTeX
         - [Overleaf](https://www.overleaf.com/)
+        - [TeXbrain](https://tex.swimmingbrain.dev/)
     - Computational notebooks
         - [Jupyter](https://jupyter.org/)
         - [Org-Mode](https://orgmode.org/)
