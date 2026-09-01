@@ -15,8 +15,8 @@ This document demonstrates how to archive and restore a Git/Git-Annex repository
 
 Clone a Git repository
 ```bash
-REPO_GIT_URL="https://gitlab.ruhr-uni-bochum.de/tengssh/fedas.git"
-git clone $REPO_GIT_URL
+REMOTE_GIT_REPO="https://gitlab.ruhr-uni-bochum.de/tengssh/fedas.git"
+git clone $REMOTE_GIT_REPO
 ```
 
 ### Configure Git & Git-Annex
