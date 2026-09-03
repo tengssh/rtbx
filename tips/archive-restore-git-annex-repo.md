@@ -137,12 +137,22 @@ git archive --format=tar.gz --prefix fedas/ -o /temp/archive.tgz HEAD
 ls /temp/
 ```
 
+The zipped file can then be uploaded to a remote data repository (e.g., [Zenodo](https://doi.org/10.5281/zenodo.22234474)) for long-term archiving.
+
 ## II. Restoring
 
 > [!Note]
 > Make sure [checksums list](#create-a-checksum-summary) was created in the archiving step.
 
 ### Restore Git repository
+
+0. Download the archived Git repository from the remote data repository (e.g., Zenodo).
+```bash
+REMOTE_ARCHIVE_FILE="https://zenodo.org/records/14673466/files/archive.tgz"
+
+cd /temp/
+wget $REMOTE_ARCHIVE_FILE
+```
 
 1. Unzip the archived Git repository
 ```bash
