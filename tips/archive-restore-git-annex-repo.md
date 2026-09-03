@@ -175,7 +175,7 @@ git commit -m "1st commit"
 git annex init
 ```
  
-### Re-register URLs for Git-Annex
+### Re-register URLs & get data via Git-Annex
 
 1. Register URLs from checksums summary for annexed files
 ```bash
