@@ -109,8 +109,11 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [CodeRefinery lessons](https://coderefinery.org/lessons/)
 - [ARCHER2 Online Training](https://www.archer2.ac.uk/training/online/)
 - [Digital Research Academy](https://digital-research.academy/)
-- [Expert Training in High-Performance Computing](https://www.hlrs.de/training/hpc-training)
+- [HLRS - Expert Training in High-Performance Computing](https://www.hlrs.de/training/hpc-training)
 - [Open Hackathons - Technical Resources](https://www.openhackathons.org/s/technical-resources)
+- [NHR - Events & Trainings](https://www.nhr-verein.de/events-trainings/)
+- [AI:AT - Trainings & Webinars](https://ai-at.eu/trainings/)
+- [Sweden AI Factory - Training and upskilling](https://swedenaifactory.se/all-services/training-and-upskilling/)
 
 ## Communities
 - Open Science & Open Research
