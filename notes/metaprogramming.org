@@ -1,0 +1,83 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       Metaprogramming
+#+AUTHOR:      tengssh
+#+LANGUAGE:    en
+#+STARTUP:     indent
+#+TAGS: Python(P)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+
+* Overview
+Metaprogramming is a programming technique that treats programs as data, thus allowing a program to manipulate another program (or itself) within the same code. 
+As the popular programming principle "DRY" (Don't Repeat Yourself) suggests, metaprogramming can in fact be helpful in making code DRYer. 
+However, this may also make code less readable and harder to maintain.
+
+* Usages
+** Python
+- Access variables/functions/classes via =globals()= & =locals()=
+- Modify attributes using =setattr(object, name, attribute)=
+- Inspect attributes using =getattr(object, name)=
+
+* Examples
+** Reuse functions with updated parameters                          :Python:
+#+begin_src python :results output :session *python* :exports both
+def print_name(name: str = None) -> None:
+    print(name)
+
+class HelloWorld:
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self._first_name = name.split(' ')[0]
+        self._last_name = name.split(' ')[1]
+
+    def print_name(self) -> None:
+        print(f'Hi, {self.name}.')
+
+    def modify_in(self) -> None:
+        setattr(locals()['self'], 'name', self._first_name)
+
+    def callin(self) -> None:
+        locals()['self'].print_name()
+
+    @staticmethod
+    def modify_out() -> None:
+        for var in globals()['print_name'].__code__.co_varnames:
+            if var == 'name':
+                globals()['print_name'].__defaults__ = ('Not None',)
+
+    @staticmethod
+    def callout() -> None:
+        globals()['print_name']()
+
+HW = HelloWorld('First Last')
+
+print('1.')
+HW.callout()
+HW.modify_out()
+print('2.')
+HW.callout()
+
+print('3.')
+HW.callin()
+HW.modify_in()
+print('4.')
+HW.callin()
+#+end_src
+
+#+RESULTS:
+: 1.
+: None
+: 2.
+: Not None
+: 3.
+: Hi, First Last.
+: 4.
+: Hi, First.
+
+* References
+- https://en.wikipedia.org/wiki/Metaprogramming
+- https://stackoverflow.com/questions/514644/what-exactly-is-metaprogramming
+- https://github-pages.ucl.ac.uk/rsd-engineeringcourse/ch07dry/060Metaprogramming.html
