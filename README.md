@@ -114,6 +114,8 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [NHR - Events & Trainings](https://www.nhr-verein.de/events-trainings/)
 - [AI:AT - Trainings & Webinars](https://ai-at.eu/trainings/)
 - [Sweden AI Factory - Training and upskilling](https://swedenaifactory.se/all-services/training-and-upskilling/)
+- [HIFIS - Education & Training](https://www.hifis.net/services/software/training/)
+- [Training courses at JSC](https://www.fz-juelich.de/en/jsc/education/training-courses)
 
 ## Communities
 - Open Science & Open Research
