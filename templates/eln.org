@@ -12,7 +12,16 @@
 #+PROPERTY: header-args:shell :var VARIABLE="VALUE" :results output
 
 * Project overview
-
+** Objective (Who/When/Why)
+The goal is to (M/A)
+- ...
+by (T)
+- ...
+because (R)
+- ...
+** Key Results (What/Where/How)
+To be done (S)
+- ...
 * Resources
 
 * Journal
