@@ -127,6 +127,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Nationale Forschungsdateninfrastruktur](https://www.nfdi.de/)
     - [Global Federation of Reproducibility Networks (GFRN)](https://reproducibility.global/)
     - [ReproducibiliTea](https://reproducibilitea.org/)
+    - [LMU Open Science Center](https://www.osc.lmu.de/index.html)
 - Research Software Engineering
     - [Software Sustainability Institute](https://www.software.ac.uk/)
     - [Research Software Engineers International](https://researchsoftware.org/)
