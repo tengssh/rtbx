@@ -62,6 +62,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Mamba](https://mamba.readthedocs.io/)
     - [uv](https://docs.astral.sh/uv/)
     - [Pixi](https://pixi.prefix.dev/)
+    - [Spack](https://spack.io/)
 - Workflow
     - [GNU Make](https://www.gnu.org/software/make/)
     - [Snakemake](https://snakemake.github.io/)
