@@ -29,6 +29,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
         - [HackMD](https://hackmd.io/)
         - [LiaScript LiveEditor](https://liascript.github.io/LiveEditor/)
     - Typst
+        - [Typst](https://typst.app/play/)
     - LaTeX
         - [Overleaf](https://www.overleaf.com/)
         - [TeXbrain](https://tex.swimmingbrain.dev/)
