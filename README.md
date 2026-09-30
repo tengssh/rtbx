@@ -119,6 +119,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - [Sweden AI Factory - Training and upskilling](https://swedenaifactory.se/all-services/training-and-upskilling/)
 - [HIFIS - Education & Training](https://www.hifis.net/services/software/training/)
 - [Training courses at JSC](https://www.fz-juelich.de/en/jsc/education/training-courses)
+- [ENCCS - Lesson Library](https://enccs.github.io/lessons/)
 
 ## Communities
 - Open Science & Open Research
