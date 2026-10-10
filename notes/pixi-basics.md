@@ -24,7 +24,7 @@
         - `--import requirements.txt`: add dependencies to `pixi.toml`
 - Install packages
     ```bash
-    pixi add python==3.11
+    pixi add python==3.11 # or ">=3.11"
     ```
 - Rebuild environment
     ```bash
