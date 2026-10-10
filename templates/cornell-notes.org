@@ -12,7 +12,6 @@
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
 #+PROPERTY: header-args:python :async yes :python /opt/python/python3 
 
-* Subject: Cornell notes                                            :Preview:
 ** Resources
 - ...
 ** Keywords
