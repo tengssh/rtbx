@@ -111,8 +111,8 @@
             ```
     - Add local editable dependencies
         ```bash
-	pixi add --pypi --editable "lm-eval[hf] @ file://absolute_path/lm-evaluation-harness"
-	```
+        pixi add --pypi --editable "lm-eval[hf] @ file://absolute_path/lm-evaluation-harness"
+        ```
 	- Use absolute path (+ extra dependencies)
 	    ```bash
 	    # pixi.toml
