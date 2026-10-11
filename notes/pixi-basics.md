@@ -113,12 +113,12 @@
         ```bash
         pixi add --pypi --editable "lm-eval[hf] @ file://absolute_path/lm-evaluation-harness"
         ```
-	- Use absolute path (+ extra dependencies)
-	    ```bash
-	    # pixi.toml
+        - Use absolute path (+ extra dependencies)
+            ```bash
+            # pixi.toml
             [pypi-dependencies]
             lm-eval = { path = "/absolute_path/lm-evaluation-harness", editable = true, extras = ["hf"] }
-	    ```
+            ```
     - Run command in a specified environment
         ```bash
         pixi run --environment debug python -c "import sisl; print(sisl.__version__)"
