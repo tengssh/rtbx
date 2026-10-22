@@ -10,7 +10,7 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport inlineimages
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
-#+PROPERTY: header-args:python :async yes :python /opt/python/python3 
+#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
 
 ** Resources
 - ...

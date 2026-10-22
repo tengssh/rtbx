@@ -10,6 +10,7 @@
 #+EXPORT_EXCLUDE_TAGS: noexport inlineimages
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
 #+PROPERTY: header-args:shell :var VARIABLE="VALUE" :results output
+#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
 
 * Project overview
 ** Objectives (Who/When/Why)
