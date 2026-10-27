@@ -91,6 +91,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 - Data specifications
     - [Flexible Image Transport System (FITS)](https://fits.gsfc.nasa.gov/)
     - [Hierarchical Data Format (HDF)](https://www.hdfgroup.org/solutions/hdf5/)
+    - [Network Common Data Form (NetCDF)](https://www.unidata.ucar.edu/software/netcdf)
     - [Research Object Crate (RO-Crate)](https://www.researchobject.org/ro-crate/)
 - Data managment
     - RAID levels
