@@ -61,6 +61,7 @@
             - `term`: terminal
             - `toggle-truncate-lines` (`C-x x t`): enable/disable truncating lines
             - `package-refresh-contents`: refresh the package list (before installing packages)
+            - `ediff`: compare two files
     - [Evil-Mode](https://github.com/emacs-evil/evil) (`use-package evil`)
         - `M-x evil-mode`
         - `ESC`: return to Normal mode
