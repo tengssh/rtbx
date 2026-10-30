@@ -132,6 +132,9 @@ As deterministic processes and outputs are essential for robust computation, the
     - [OPTIONS]
         - `--container` (or `-C`): create an isolated environment
         - `--expose=HOST_PATH[=IMG_PATH]`: mount a host path (to an image path)
+        - `--network` (or `-N`): enable network access; usually together with
+            - `--expose=/etc/ssl/certs` (for HTTPS connections)
+            - `--expose=/etc/protocols` (for mapping network protocols, e.g., tcp, udp)
         - `--export-manifest`: export a manifest file for a given shell command
         - `--manifest=FILE` (or `-m FILE`): load a manifest file
     - [Examples]
