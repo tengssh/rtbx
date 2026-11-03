@@ -1,0 +1,663 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       HDF5 basics
+#+AUTHOR:      tengssh
+#+LANGUAGE:    en
+#+STARTUP:     indent
+#+TAGS: C(C) Python(P)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
+
+* Overview
+HDF5 (Hierarchical Data Format, Version 5) is an open-source, portable, self-describing data format.
+It is widely used in scientific communities as it can store large amounts of data, supports parallel I/Os, and offers APIs in many languages (e.g., C/C++, Fortran, and Python).
+
+** HDF5 objects
+The HDF5 format contain the following data objects:
+- Files: Containers for storing HDF5 data
+- Groups: File-system-like folders for data organization
+- Datasets: Actual data
+- Datatypes: Definitions of data format (e.g., integer, float, string)
+- Dataspaces: Dimensionality and shape of the data
+- Property List: Customizable settings for storage behaviors (e.g., compression, chunking, and file access tuning)
+- Attributes: Metadata for contextual descriptions of data objects (except for attributes)
+
+** HDF5 workflow
+In principle, the workflow to access an HDF5 file follows a hierarchical order, for example (syntax in C):
+1. Create/Open File (=H5Fcreate= / =H5Fopen=)
+  2. Create/Open Group (=H5Gcreate= / =H5Gopen=)
+    3. Use/Copy Datatype (e.g., =H5T_NATIVE_INT=, =H5Tcopy(H5T_C_S1)=)
+    4. Create/Open Dataspace (e.g., =H5Screate_simple=)
+    5. Create/Open Property List (=H5Pcreate=: optional, or use =H5P_DEFAULT=)
+      6. Create/Open Dataset (=H5Dcreate=: using Datatype, Dataspace, and Property IDs)
+        7. Create/Open Attribute (=H5Acreate=: attached to Dataset or Group)
+          8. Write/Read data
+        9. Close Attribute (=H5Aclose=)
+      10. Close Dataset (=H5Dclose=)
+    11. Close Property (=H5Pclose=)
+    12. Close Dataspace (=H5Sclose=)
+    13. Close Datatype (=H5Tclose=: for copied ones)
+  14. Close Group (=H5Gclose=)
+15. Close File (=H5Fclose=)
+
+* Usage
+** Environment
+#+begin_src shell :session *shell* :results output :exports both
+alias ls="ls --color=none"
+h5ls --version
+h5dump --version
+python3 --version
+python3 -m pip list
+#+end_src
+
+#+RESULTS:
+#+begin_example
+h5ls: Version 1.10.7
+h5dump: Version 1.10.7
+Python 3.10.12
+Package    Version
+---------- -------
+cftime     1.5.2
+h5py       3.16.0
+mpi4py     4.1.2
+netCDF4    1.5.8
+numpy      1.21.5
+packaging  26.3
+pip        26.3
+setuptools 84.2.1
+wheel      0.48.0
+#+end_example
+
+** Creating HDF5 files (Serial)
+*** Creating HDF5 files in C
+- Include HDF5 library
+#+begin_src c :tangle create_hdf5.c
+#include <hdf5.h>
+#include <string.h>
+
+int main(){
+#+end_src
+
+- Define data
+#+begin_src c :tangle create_hdf5.c
+    int n_samples = 10;
+    int distances[10] = {0, 1, 2, 3, 3, 3, 4, 5, 6, 7};
+    double velocities[10] = {1.0, 1.0, 1.0, 0.5, 0.0, 0.5, 1.0, 1.0, 1.0, 1.0};
+#+end_src
+
+- Create file
+  - =H5F_ACC_RDONLY=: Open for read-only access
+  - =H5F_ACC_RDWR=: Open for read-and-write access
+  - =H5F_ACC_TRUNC=: Create or overwrite if the file exists
+  - =H5F_ACC_EXCL=: Create or fail if the file exists
+#+begin_src c :tangle create_hdf5.c
+    const char file_name[] = "trajectories.hdf5";
+    hid_t file_id = H5Fcreate(file_name, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+#+end_src
+
+- Create group
+#+begin_src c :tangle create_hdf5.c
+    const char group_name[] = "Trajectories";
+    hid_t group_id = H5Gcreate(file_id, group_name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#+end_src
+
+- Create dataspace for group attributes
+#+begin_src c :tangle create_hdf5.c
+    hid_t gattr_space_id = H5Screate(H5S_SCALAR);
+#+end_src
+
+- Create group attribute 1
+#+begin_src c :tangle create_hdf5.c
+    const char gattr1_name[] = "Boundary condition";
+    const char gattr1_val[] = "PBC";
+    hid_t type_str = H5Tcopy(H5T_C_S1);
+    H5Tset_size(type_str, strlen(gattr1_val) + 1 );
+    hid_t gattr1_id = H5Acreate(group_id, gattr1_name, type_str, gattr_space_id, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(gattr1_id, type_str, gattr1_val);
+    H5Aclose(gattr1_id);
+    H5Tclose(type_str);
+#+end_src
+
+- Create group attribute 2
+#+begin_src c :tangle create_hdf5.c
+    const char gattr2_name[] = "Number of samples";
+    hid_t type_int = H5Tcopy(H5T_NATIVE_INT);
+    hid_t gattr2_id = H5Acreate(group_id, gattr2_name, type_int, gattr_space_id, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(gattr2_id, type_int, &n_samples);
+    H5Aclose(gattr2_id);
+    H5Tclose(type_int);
+#+end_src
+
+- Create dataspace for datasets
+#+begin_src c :tangle create_hdf5.c
+    hsize_t dims[1] = {n_samples};
+    hid_t ds_space_id = H5Screate_simple(1, dims, NULL);
+#+end_src
+
+- Create dataset 1
+#+begin_src c :tangle create_hdf5.c
+    const char ds1_name[] = "Distances";
+    hid_t ds1_id = H5Dcreate(group_id, ds1_name, H5T_NATIVE_INT, ds_space_id, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    H5Dwrite(ds1_id, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, distances);
+#+end_src
+
+- Create attribute 1 for dataset 1
+#+begin_src c :tangle create_hdf5.c
+    type_str = H5Tcopy(H5T_C_S1);
+    const char ds1_attr1_name[] = "Description";
+    const char ds1_attr1_val[] = "Distances from the origin";
+    H5Tset_size(type_str, strlen(ds1_attr1_val) + 1 );
+    hid_t ds1_attr1_id = H5Acreate(ds1_id, ds1_attr1_name, type_str, gattr_space_id, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(ds1_attr1_id, type_str, ds1_attr1_val);
+    H5Aclose(ds1_attr1_id);
+    H5Tclose(type_str);
+#+end_src
+
+- Create attribute 2 for dataset 1
+#+begin_src c :tangle create_hdf5.c
+    type_str = H5Tcopy(H5T_C_S1);
+    const char ds1_attr2_name[] = "Unit";
+    const char ds1_attr2_val[] = "m";
+    H5Tset_size(type_str, strlen(ds1_attr2_val) + 1 );
+    hid_t ds1_attr2_id = H5Acreate(ds1_id, ds1_attr2_name, type_str, gattr_space_id, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(ds1_attr2_id, type_str, ds1_attr2_val);
+    H5Aclose(ds1_attr2_id);
+    H5Tclose(type_str);
+#+end_src
+
+- Close dataset 1
+#+begin_src c :tangle create_hdf5.c
+    H5Dclose(ds1_id);
+#+end_src
+
+- Create dataset 2
+#+begin_src c :tangle create_hdf5.c
+    const char ds2_name[] = "Velocities";
+    hid_t ds2_id = H5Dcreate(group_id, ds2_name, H5T_NATIVE_DOUBLE, ds_space_id, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    H5Dwrite(ds2_id, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, velocities);
+#+end_src
+
+- Create attribute 1 for dataset 2
+#+begin_src c :tangle create_hdf5.c
+    type_str = H5Tcopy(H5T_C_S1);
+    const char ds2_attr1_name[] = "Description";
+    const char ds2_attr1_val[] = "Velocities of the object";
+    H5Tset_size(type_str, strlen(ds2_attr1_val) + 1 );
+    hid_t ds2_attr1_id = H5Acreate(ds2_id, ds2_attr1_name, type_str, gattr_space_id, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(ds2_attr1_id, type_str, ds2_attr1_val);
+    H5Aclose(ds2_attr1_id);
+    H5Tclose(type_str);
+#+end_src
+
+- Create attribute 2 for dataset 2
+#+begin_src c :tangle create_hdf5.c
+    type_str = H5Tcopy(H5T_C_S1);
+    const char ds2_attr2_name[] = "Unit";
+    const char ds2_attr2_val[] = "m/s";
+    H5Tset_size(type_str, strlen(ds2_attr2_val) + 1 );
+    hid_t ds2_attr2_id = H5Acreate(ds2_id, ds2_attr2_name, type_str, gattr_space_id, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(ds2_attr2_id, type_str, ds2_attr2_val);
+    H5Aclose(ds2_attr2_id);
+    H5Tclose(type_str);
+#+end_src
+
+- Close dataset 2
+#+begin_src c :tangle create_hdf5.c
+    H5Dclose(ds2_id);
+#+end_src
+
+- Close everything
+  - Use =herr_t= to store the return code
+#+begin_src c :tangle create_hdf5.c
+    H5Sclose(ds_space_id);
+    H5Sclose(gattr_space_id);
+    H5Gclose(group_id);
+    herr_t status = H5Fclose(file_id);
+    return status;
+}
+#+end_src
+
+- Create =create_hdf5.c= (=C-c C-v t=)
+
+- Compile & execute code
+#+begin_src shell :session *shell* :results output :exports both
+mpicc create_hdf5.c -lhdf5 -o a.out
+#h5cc create_hdf5.c -o a.out
+./a.out
+ls *.hdf5
+#+end_src
+
+#+RESULTS:
+: trajectories.hdf5
+*** Creating HDF5 files in Python
+- Import HDF5 library
+#+begin_src python :results output :session *python* :exports both :tangle create_hdf5.py
+import h5py
+import numpy as np
+#+end_src
+
+- Define data
+#+begin_src python :results output :session *python* :exports both :tangle create_hdf5.py
+n_samples = 10
+distances = np.array([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]).astype("i2")
+velocities = np.array([1.0, 1.0, 1.0, 0.5, 0.0, 0.5, 1.0, 1.0, 1.0, 1.0]).astype("f8")
+#+end_src
+
+- Create file
+#+begin_src python :results output :session *python* :exports both :tangle create_hdf5.py
+file_name = "trajectories.hdf5"
+file_id = h5py.File(file_name, "w")
+#+end_src
+
+- Create group & attributes
+#+begin_src python :results output :session *python* :exports both :tangle create_hdf5.py
+group_name = "Trajectories"
+group_id = file_id.create_group(group_name)
+group_id.attrs["Boundary condition"] = "PBC"
+group_id.attrs["Number of samples"] = n_samples
+#+end_src
+
+- Create datasets & attributes
+#+begin_src python :results output :session *python* :exports both :tangle create_hdf5.py
+ds1_name = "Distances"
+ds1_id = group_id.create_dataset(ds1_name, data=distances)
+ds1_id.attrs["Description"] = "Distances from the origin"
+ds1_id.attrs["Unit"] = "m"
+
+ds2_name = f"{group_name}/Velocities"
+ds2_id = file_id.create_dataset(ds2_name, data=velocities)
+ds2_id.attrs["Description"] = "Velocities of the object"
+ds2_id.attrs["Unit"] = "m/s"
+#+end_src
+
+- Close file
+#+begin_src python :results output :session *python* :exports both :tangle create_hdf5.py
+file_id.close()
+#+end_src
+
+- Execute code
+#+begin_src shell :session *shell* :results output :exports both
+python3 create_hdf5.py
+ls *.hdf5
+#+end_src
+
+#+RESULTS:
+: trajectories.hdf5
+
+** Reading HDF5 files (Serial)
+*** HDF5 utilities
+**** =h5ls=
+#+begin_src shell :session *shell* :results output :exports both
+echo "=== View file structure recursively (-r)"
+h5ls -r trajectories.hdf5
+echo "=== View group structure"
+h5ls -r trajectories.hdf5/'Trajectories'
+echo "=== View dataset"
+h5ls -d trajectories.hdf5/'Trajectories/Distances'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+=== View file structure recursively (-r)
+/                        Group
+/Trajectories            Group
+/Trajectories/Distances  Dataset {10}
+/Trajectories/Velocities Dataset {10}
+=== View group structure
+/Distances               Dataset {10}
+/Velocities              Dataset {10}
+=== View dataset
+Distances                Dataset {10}
+    Data:
+         0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+#+end_example
+
+**** =h5dump=
+#+begin_src shell :session *shell* :results output :exports both
+echo "=== View header (-H)"
+h5dump -H trajectories.hdf5
+echo "=== View group (-g)"
+h5dump -g Trajectories trajectories.hdf5
+echo "=== View dataset (-d)"
+h5dump -d Trajectories/Distances trajectories.hdf5
+#+end_src
+
+#+RESULTS:
+#+begin_example
+=== View header (-H)
+HDF5 "trajectories.hdf5" {
+GROUP "/" {
+   GROUP "Trajectories" {
+      ATTRIBUTE "Boundary condition" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 4;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+      }
+      ATTRIBUTE "Number of samples" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SCALAR
+      }
+      DATASET "Distances" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+         ATTRIBUTE "Description" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 26;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "Unit" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 2;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+      }
+      DATASET "Velocities" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+         ATTRIBUTE "Description" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 25;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "Unit" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 4;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+      }
+   }
+}
+}
+=== View group (-g)
+HDF5 "trajectories.hdf5" {
+GROUP "Trajectories" {
+   ATTRIBUTE "Boundary condition" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 4;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "PBC"
+      }
+   }
+   ATTRIBUTE "Number of samples" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SCALAR
+      DATA {
+      (0): 10
+      }
+   }
+   DATASET "Distances" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+      DATA {
+      (0): 0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+      }
+      ATTRIBUTE "Description" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 26;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "Distances from the origin"
+         }
+      }
+      ATTRIBUTE "Unit" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 2;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "m"
+         }
+      }
+   }
+   DATASET "Velocities" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+      DATA {
+      (0): 1, 1, 1, 0, 0, 0, 1, 1, 1, 1
+      }
+      ATTRIBUTE "Description" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 25;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "Velocities of the object"
+         }
+      }
+      ATTRIBUTE "Unit" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 4;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "m/s"
+         }
+      }
+   }
+}
+}
+=== View dataset (-d)
+HDF5 "trajectories.hdf5" {
+DATASET "Trajectories/Distances" {
+   DATATYPE  H5T_STD_I32LE
+   DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+   DATA {
+   (0): 0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+   }
+   ATTRIBUTE "Description" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 26;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "Distances from the origin"
+      }
+   }
+   ATTRIBUTE "Unit" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 2;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "m"
+      }
+   }
+}
+}
+#+end_example
+*** Reading HDF5 files in C
+#+begin_src c :tangle read_hdf5.c
+#include <hdf5.h>
+#include <stdio.h>
+
+int main(){
+    // Open file
+    hid_t file_id = H5Fopen("trajectories.hdf5", H5F_ACC_RDONLY, H5P_DEFAULT);
+
+    // Open group
+    hid_t group_id = H5Gopen(file_id, "Trajectories", H5P_DEFAULT);
+
+    // Open group attributes
+    hid_t gattr1_id = H5Aopen(group_id, "Boundary condition", H5P_DEFAULT);
+    hid_t type_str = H5Aget_type(gattr1_id);
+    char gattr1_val[10];
+    H5Aread(gattr1_id, type_str, gattr1_val);
+    H5Aclose(gattr1_id);
+    H5Tclose(type_str);
+    printf("Boundary condition: %s\n", gattr1_val);
+
+    hid_t gattr2_id = H5Aopen(group_id, "Number of samples", H5P_DEFAULT);
+    int n_samples = 0;
+    H5Aread(gattr2_id, H5T_NATIVE_INT, &n_samples);
+    H5Aclose(gattr2_id);
+    printf("Number of samples: %d\n", n_samples);
+
+    // Open dataset 1
+    hid_t ds1_id = H5Dopen(group_id, "Distances", H5P_DEFAULT);
+    int distances[10];
+    H5Dread(ds1_id, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, distances);
+
+    hid_t ds1_attr1 = H5Aopen(ds1_id, "Description", H5P_DEFAULT);
+    hid_t ds1_type1 = H5Aget_type(ds1_attr1);
+    char ds1_attr1_val[128] = {0};
+    H5Aread(ds1_attr1, ds1_type1, ds1_attr1_val);
+    H5Aclose(ds1_attr1);
+    H5Tclose(ds1_type1);
+
+    hid_t ds1_attr2 = H5Aopen(ds1_id, "Unit", H5P_DEFAULT);
+    hid_t ds1_type2 = H5Aget_type(ds1_attr2);
+    char ds1_attr2_val[10] = {0};
+    H5Aread(ds1_attr2, ds1_type2, ds1_attr2_val);
+    H5Aclose(ds1_attr2);
+    H5Tclose(ds1_type2);
+
+    printf("\nDataset: Distances\n  Description: %s\n  Unit: %s\n", ds1_attr1_val, ds1_attr2_val);
+    for(int i = 0; i < n_samples; i++) {
+        printf("%d ", distances[i]);
+    }
+    printf("\n");
+    H5Dclose(ds1_id);
+    
+    // Open dataset 2
+    hid_t ds2_id = H5Dopen(group_id, "Velocities", H5P_DEFAULT);
+    double velocities[10];
+    H5Dread(ds2_id, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, velocities);
+
+    hid_t ds2_attr1 = H5Aopen(ds2_id, "Description", H5P_DEFAULT);
+    hid_t ds2_type1 = H5Aget_type(ds2_attr1);
+    char ds2_attr1_val[128] = {0};
+    H5Aread(ds2_attr1, ds2_type1, ds2_attr1_val);
+    H5Aclose(ds2_attr1);
+    H5Tclose(ds2_type1);
+
+    hid_t ds2_attr2 = H5Aopen(ds2_id, "Unit", H5P_DEFAULT);
+    hid_t ds2_type2 = H5Aget_type(ds2_attr2);
+    char ds2_attr2_val[10] = {0};
+    H5Aread(ds2_attr2, ds2_type2, ds2_attr2_val);
+    H5Aclose(ds2_attr2);
+    H5Tclose(ds2_type2);
+
+    printf("\nDataset: Velocities\n  Description: %s\n  Unit: %s\n", ds2_attr1_val, ds2_attr2_val);
+    for(int i = 0; i < n_samples; i++) {
+        printf("%.1f ", velocities[i]);
+    }
+    printf("\n");
+    H5Dclose(ds2_id);
+
+    // Close everything
+    H5Gclose(group_id);
+    herr_t status = H5Fclose(file_id);
+    return status;
+}
+#+end_src
+
+#+begin_src shell :session *shell* :results output :exports both
+#mpicc read_hdf5.c -lhdf5 -o a.out
+h5cc read_hdf5.c
+./a.out
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Boundary condition: PBC
+Number of samples: 10
+
+Dataset: Distances
+  Description: Distances from the origin
+  Unit: m
+0 1 2 3 3 3 4 5 6 7 
+
+Dataset: Velocities
+  Description: Velocities of the object
+  Unit: m/s
+1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 1.0 1.0
+#+end_example
+
+*** Reading HDF5 files in Python
+#+begin_src python :results output :session *python* :exports both :tangle read_hdf5.py
+import h5py
+
+with h5py.File("trajectories.hdf5", "r") as file_id:
+    group_id = file_id["Trajectories"]
+    for gkey, gval in group_id.attrs.items():
+        print(f"{gkey}: {gval}")
+    print("")
+    for ds_id in group_id:
+        print(f"Dataset: {ds_id}")
+        print(f"  Description: {group_id[ds_id].attrs['Description']}")
+        print(f"  Unit: {group_id[ds_id].attrs['Unit']}")
+        for val in group_id[ds_id]:
+            print(f"{val} ", end="")
+        print("\n")
+#+end_src
+
+#+begin_src shell :session *shell* :results output :exports both
+python3 read_hdf5.py
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Boundary condition: PBC
+Number of samples: 10
+
+Dataset: Distances
+  Description: Distances from the origin
+  Unit: m
+0 1 2 3 3 3 4 5 6 7 
+
+Dataset: Velocities
+  Description: Velocities of the object
+  Unit: m/s
+1.0 1.0 1.0 0.5 0.0 0.5 1.0 1.0 1.0 1.0
+#+end_example
+
+* References
+- https://indico3-jsc.fz-juelich.de/event/293/overview
+- https://support.hdfgroup.org/documentation/
