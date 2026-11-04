@@ -5,3 +5,4 @@
 - [compile-biblatex](./compile-biblatex.md): different approaches to processing bibliographies using BibLaTeX
 - [git-bisect](./git-bisect.md): a convenient way to find the source of bugs using Git
 - [archive-restore-git-annex-repo](./archive-restore-git-annex-repo.md): how to archive and restore a Git/Git-Annex repository
+- [git-rebase](./git-rebase.md): how to use Git rebase for tidying up and rewriting commit history
