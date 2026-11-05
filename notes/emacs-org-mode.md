@@ -72,6 +72,9 @@
     - [gptel](https://github.com/karthink/gptel) (`use-package gptel`)
         - `M-x gptel-send`: send prompts
         - `M-x gptel`: open a chat buffer
+        - `M-x gptel-rewrite`: rewrite a selected region
+            - `M-x gptel--rewrite-diff` (`C-c C-d`): view differences of the modified content
+            - `M-x gptel--rewrite-accept` (`C-c C-a`): accept the modification
         - `C-u M-x gptel-send`: open the settings menu
     - [Ivy-Mode](https://github.com/abo-abo/swiper) (`use-package ivy`)
         - Councel (`use-package councel`)
