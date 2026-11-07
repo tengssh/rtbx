@@ -61,6 +61,9 @@ git log --oneline --graph --all
 
 ## Interactive rebase
 
+> [!Note]
+> [git-history](https://git-scm.com/docs/git-history) is another command that can be used to rewrite history.
+
 0. Assume the following commit history with 6 commits on the `main` branch
 ```bash
 git log --oneline --graph --patch --all
