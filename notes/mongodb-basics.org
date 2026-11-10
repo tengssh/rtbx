@@ -1,0 +1,219 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       MongoDB basics
+#+AUTHOR:      tengssh
+#+LANGUAGE:    en
+#+STARTUP:     indent
+#+TAGS: Python(P)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
+
+* Overview
+[[https://www.mongodb.com/][MongoDB]] is a document-oriented database that stores data in BSON (Binary JSON) format with a dynamic schema (flexible fields/keys).  
+
+- MongoDB concepts
+| Key concepts | Description                                 |
+|--------------+---------------------------------------------|
+| Database     | A container of collections                  |
+| Collection   | A group of BSON documents                   |
+| Document     | Records stored in BSON (Binary JSON) format |
+
+* Installation
+- [[https://www.mongodb.com/docs/manual/administration/install-community/][Install MongoDB Community Edition]]
+- [[https://www.mongodb.com/docs/mongodb-shell/install/][Install mongosh]]
+- [[https://pypi.org/project/pymongo/][PyMongo]]
+  
+#+begin_src shell :session *shell* :results output :exports both
+alias ls='ls --color=none'
+mongod --version
+mongosh --version
+bin/python3 -c 'import pymongo; print(pymongo.__version__)'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+db version v9.0.4
+Build Info: {
+    "version": "9.0.4",
+    "gitVersion": "64ade602b836c9adeffba7fa038c887ffab56196",
+    "openSSLVersion": "OpenSSL 3.5.8 25 Aug 2026",
+    "modules": [],
+    "allocator": "tcmalloc-google",
+    "javascriptEngine": "mozjs-wasm",
+    "environment": {
+        "distmod": "rhel93",
+        "distarch": "x86_64",
+        "target_arch": "x86_64"
+    }
+}
+2.6.0
+4.19.0
+#+end_example
+
+* Usage
+** Start server
+#+begin_src shell :session *shell-mongodb* :async yes :results none :exports both
+mkdir -p ./data
+mongod --dbpath ./data
+#+end_src
+
+** Create database
+#+begin_src python :results output :session *python* :exports both
+import pymongo
+
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["materials_db"]
+print("Databases:", client.list_database_names())
+#+end_src
+
+#+RESULTS:
+: Databases: ['admin', 'config', 'local']
+
+** Create collection
+#+begin_src python :results output :session *python* :exports both
+collection = db["oxides"]
+#+end_src
+
+#+RESULTS:
+
+- Lazy loading
+#+begin_src python :results output :session *python* :exports both
+collection.insert_one({"formula": "BaTiO3"})
+print("Databases:", client.list_database_names())
+print(list(collection.find()))
+#+end_src
+
+#+RESULTS:
+: Databases: ['admin', 'config', 'local', 'materials_db']
+: [{'_id': ObjectId('6af36b0462d4d38b7545c9fa'), 'formula': 'BaTiO3'}]
+
+** Create index
+- Enable efficient queries without a full collection scan.
+#+begin_src python :results output :session *python* :exports both
+collection.create_index("formula")
+print("Indexes:", list(collection.list_indexes()))
+#+end_src
+
+** CRUD operations
+*** Create (Insert)
+#+begin_src python :results output :session *python* :exports both
+# Insert one
+doc = {"formula": "BaTiO3", "structure": "perovskite", "band_gap": 3.5}
+result = collection.insert_one(doc)
+print("Inserted ID:", result.inserted_id)
+
+# Insert many
+docs = [
+    {"formula": "TiO2", "structure": "rutile", "band_gap": 3.0},
+    {"formula": "ZnO", "structure": "wurtzite", "band_gap": 3.3},
+]
+result = collection.insert_many(docs)
+print("Inserted IDs:", result.inserted_ids)
+#+end_src
+
+#+RESULTS:
+: Inserted ID: 6af36b0862d4d38b7545c9fb
+: Inserted IDs: [ObjectId('6af36b0862d4d38b7545c9fc'), ObjectId('6af36b0862d4d38b7545c9fd')]
+
+*** Read (Find)
+#+begin_src python :results output :session *python* :exports both
+# Find one
+query = collection.find_one({"formula": "BaTiO3"})
+print("Find one:", query)
+
+# Find all
+query = collection.find({"band_gap": {"$gte": 3.3}})
+for i, doc in enumerate(query):
+    print(f"Wide gap ({i+1}):", doc["formula"], doc["band_gap"])
+
+# Count
+print("Total oxides:", collection.count_documents({}))
+#+end_src
+
+#+RESULTS:
+: Find one: {'_id': ObjectId('6af36b0462d4d38b7545c9fa'), 'formula': 'BaTiO3'}
+: Wide gap (1): BaTiO3 3.5
+: Wide gap (2): ZnO 3.3
+: Total oxides: 4
+
+*** Update
+#+begin_src python :results output :session *python* :exports both
+# Update one
+result = collection.update_one(
+    {"formula": "BaTiO3"},
+    {"$set": {"band_gap": 3.3, "phase": "tetragonal"}}
+)
+print("Modified count:", result.modified_count)
+query = collection.find_one({"formula": "BaTiO3"})
+print("BaTiO3 updates:", query)
+
+# Update many
+result = collection.update_many(
+    {},
+    {"$set": {"method": "DFT"}}
+)
+print("Modified count:", result.modified_count)
+
+# Upsert (insert if not exists)
+collection.update_one(
+    {"formula": "SiO2"},
+    {"$set": {"structure": "quartz", "band_gap": 9.0}},
+    upsert=True
+)
+query = collection.find_one({"formula": "SiO2"})
+print("SiO2 exists:", query is not None)
+#+end_src
+
+#+RESULTS:
+: Modified count: 1
+: BaTiO3 updates: {'_id': ObjectId('6af36b0462d4d38b7545c9fa'), 'formula': 'BaTiO3', 'band_gap': 3.3, 'phase': 'tetragonal'}
+: Modified count: 4
+: SiO2 exists: True
+
+*** Delete
+#+begin_src python :results output :session *python* :exports both
+# Delete one
+result = collection.delete_one({"formula": "ZnO"})
+print("Deleted count:", result.deleted_count)
+query = collection.find_one({"formula": "ZnO"})
+print("ZnO exists:", query is not None)
+query = collection.find_one({"formula": "TiO2"})
+print("TiO2 exists:", query is not None)
+
+# Delete many
+result = collection.delete_many({"band_gap": {"$lt": 3.1}})
+print("Deleted count:", result.deleted_count)
+query = collection.find_one({"formula": "TiO2"})
+print("TiO2 exists:", query is not None)
+
+# Verify remaining
+print("Remaining:", list(collection.find({}, {"formula": 1, "_id": 0})))
+#+end_src
+
+#+RESULTS:
+: Deleted count: 1
+: ZnO exists: False
+: TiO2 exists: True
+: Deleted count: 1
+: TiO2 exists: False
+: Remaining: [{'formula': 'BaTiO3'}, {'formula': 'BaTiO3'}, {'formula': 'SiO2'}]
+
+** Drop collection
+#+begin_src python :results output :session *python* :exports both
+collection.drop()
+print(list(collection.find()))
+#+end_src
+
+#+RESULTS:
+: []
+
+** Stop server
+#+begin_src shell :session *shell* :results none :exports both
+mongod --shutdown --dbpath ./data
+#+end_src
+
+* References
+- [[https://www.mongodb.com/docs/languages/python/pymongo-driver/]]
