@@ -30,7 +30,7 @@ Key concepts in MongoDB:
 alias ls='ls --color=none'
 mongod --version
 mongosh --version
-bin/python3 -c 'import pymongo; print(pymongo.__version__)'
+python3 -c 'import pymongo; print(pymongo.__version__)'
 #+end_src
 
 #+RESULTS:
