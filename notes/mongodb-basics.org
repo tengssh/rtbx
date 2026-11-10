@@ -14,12 +14,12 @@
 * Overview
 [[https://www.mongodb.com/][MongoDB]] is a document-oriented database that stores data in BSON (Binary JSON) format with a dynamic schema (flexible fields/keys).  
 
-- MongoDB concepts
-| Key concepts | Description                                 |
-|--------------+---------------------------------------------|
-| Database     | A container of collections                  |
-| Collection   | A group of BSON documents                   |
-| Document     | Records stored in BSON (Binary JSON) format |
+Key concepts in MongoDB:
+| Concept    | Description                                 |
+|------------+---------------------------------------------|
+| Database   | A container of collections                  |
+| Collection | A group of BSON documents                   |
+| Document   | Records stored in BSON (Binary JSON) format |
 
 * Installation
 - [[https://www.mongodb.com/docs/manual/administration/install-community/][Install MongoDB Community Edition]]
