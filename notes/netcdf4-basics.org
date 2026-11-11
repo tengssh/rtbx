@@ -1,0 +1,418 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       NetCDF-4 basics
+#+AUTHOR:      tengssh
+#+LANGUAGE:    en
+#+STARTUP:     indent
+#+TAGS: C(C) Python(P)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
+
+* Overview
+NetCDF (Network Common Data Form) is a set of freely-distributed open source libraries used to create portable, self-describing, and appendable data formats.
+It is one of the popular scientific data standards that support several programming languages (e.g., C/C++, Fortran, and Python).
+
+NetCDF version 4.0 (NetCDF-4), in particular, uses HDF5 as its underlying format.
+As a result, NetCDF-4 files can be read by HDF5 and support parallel I/O (using HDF5 library), but they cannot be read by versions of netCDF older than 4.0.
+
+** [[https://docs.unidata.ucar.edu/netcdf-c/current/netcdf_data_model.html][The NetCDF data model]]
+A NetCDF file may contain the following components (syntax in C):
+- File [/ Group (for >=v4.0)]
+  - Subgroups (for >=v4.0)
+  - User-defined types (for >=v4.0)
+  - Variables: Data containers
+    - name
+    - type (DataType)
+    - shape (Dimension)
+  - Attributes: Metadata
+    - name
+    - type (DataType)
+    - values
+  - Dimensions: Shape of variables
+    - name
+    - length = fixed or =NC_UNLIMITED=
+- DataType
+  - PrimitiveType
+    - =NC_CHAR/BYTE/SHORT/INT/FLOAT/DOUBLE=
+    - =NC_INT64/UBYTE/USHORT/UINT/UINT64/STRING= (for >=v4.0)
+  - User-defined types (for >=4.0)
+    - Enum, Opaque, Compound, VariableLength
+
+** NetCDF workflow
+The following is a typical workflow for creating a netCDF file (syntax in C):
+1. Create/Open File (=nc_create= / =nc_open=)
+2. Define metadata (=nc_def_dim=, =nc_def_var=, =nc_put_att*=) -> (=nc_enddef=)
+3. Write/Read data (=nc_put_var*= / =nc_inq_grp_ncid=, =nc_inq_varid=, =nc_get_att*=, =nc_get_var*=)
+4. Close File (=nc_close=)
+
+* Usage
+** Environment
+#+begin_src shell :session *shell* :results output :exports both
+alias ls="ls --color=none"
+which ncdump
+python3 --version
+python3 -m pip list
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/usr/bin/ncdump
+Python 3.10.12
+Package    Version
+---------- -------
+cftime     1.5.2
+h5py       3.16.0
+mpi4py     4.1.2
+netCDF4    1.5.8
+numpy      1.21.5
+packaging  26.3
+pip        26.3
+setuptools 84.2.1
+wheel      0.48.0
+#+end_example
+
+** Creating NetCDF files (Serial)
+*** Creating NetCDF-4 files in C
+- Include NetCDF library
+#+begin_src c :tangle create_netcdf4.c
+#include <netcdf.h>
+#include <string.h>
+
+int main(){
+#+end_src
+
+- Define data
+#+begin_src c :tangle create_netcdf4.c
+    int n_samples = 10;
+    int distances[10] = {0, 1, 2, 3, 3, 3, 4, 5, 6, 7};
+    double velocities[10] = {1.0, 1.0, 1.0, 0.5, 0.0, 0.5, 1.0, 1.0, 1.0, 1.0};
+#+end_src
+
+- Create file
+  - Creation mode flags
+    - =NC_CLOBBER=: Overwrite if the file exists
+    - =NC_NOCLOBBER=: Create a new file only if the file does not exist
+    - File formats
+      - Default: CDF-1
+      - =NC_64BIT_OFFSET=: CDF-2
+      - =NC_64BIT_DATA=: CDF-5
+      - =NC_NETCDF4=: NetCDF-4/HDF5
+  - Open mode flags
+    - =NC_NOWRITE=: Read-only
+    - =NC_WRITE=: Read-write access
+#+begin_src c :tangle create_netcdf4.c
+    const char file_name[] = "trajectories.nc";
+    int status = NC_NOERR;
+    int ncid;
+    nc_create(file_name, NC_CLOBBER | NC_NETCDF4, &ncid);
+#+end_src
+
+- Define metadata
+#+begin_src c :tangle create_netcdf4.c
+    // Group
+    const char group_name[] = "Trajectories";
+    int group_id;
+    nc_def_grp(ncid, group_name, &group_id);
+    nc_put_att_text(group_id, NC_GLOBAL, "Boundary condition", strlen("PBC"), "PBC");
+    nc_put_att_int(group_id, NC_GLOBAL, "Number of samples", NC_INT, 1, &n_samples);
+
+    // Dimension
+    int sample_dimid;
+    nc_def_dim(group_id, "sample", n_samples, &sample_dimid);
+
+    int dimids[1] = {sample_dimid};
+
+    // Variable 1
+    const char ds1_name[] = "Distances";
+    int ds1_id;
+    nc_def_var(group_id, ds1_name, NC_INT, 1, dimids, &ds1_id);
+    // Attribute 1
+    nc_put_att_text(group_id, ds1_id, "Description", strlen("Distances from the origin"), "Distances from the origin");
+    nc_put_att_text(group_id, ds1_id, "Unit", 1, "m");
+
+    // Variable 2
+    const char ds2_name[] = "Velocities";
+    int ds2_id;
+    nc_def_var(group_id, ds2_name, NC_DOUBLE, 1, dimids, &ds2_id);
+    // Attribute 2
+    nc_put_att_text(group_id, ds2_id, "Description", strlen("Velocities of the object"), "Velocities of the object");
+    nc_put_att_text(group_id, ds2_id, "Unit", 3, "m/s");
+
+    // End define mode
+    nc_enddef(ncid);
+#+end_src
+
+- Write data
+#+begin_src c :tangle create_netcdf4.c
+    nc_put_var_int(group_id, ds1_id, distances);
+    nc_put_var_double(group_id, ds2_id, velocities);
+#+end_src
+
+- Close filee
+#+begin_src c :tangle create_netcdf4.c
+    status = nc_close(ncid);
+    return status;
+}
+#+end_src
+
+- Compile & execute code
+#+begin_src shell :session *shell* :results output :exports both
+gcc create_netcdf4.c -lnetcdf -o a.out
+./a.out"
+ls *.nc
+#+end_src
+
+#+RESULTS:
+: trajectories.nc
+
+** Reading NetCDF files (Serial)
+*** NetCDF utilities
+**** =ncdump=
+#+begin_src shell :session *shell* :results output :exports both
+echo "=== View file structure with only header information"
+ncdump -h trajectories.nc
+echo "=== View file structure with detailed information"
+ncdump -s trajectories.nc
+echo "=== View the specified variable"
+ncdump -v distance trajectories.nc
+echo "=== View the file format"
+ncdump -k trajectories.nc
+echo "=== View the specified group"
+ncdump -g Trajectories trajectories.nc
+#+end_src
+
+#+RESULTS:
+#+begin_example
+=== View file structure with only header information
+netcdf trajectories {
+
+group: Trajectories {
+  dimensions:
+  	sample = 10 ;
+  variables:
+  	int Distances(sample) ;
+  		Distances:Description = "Distances from the origin" ;
+  		Distances:Unit = "m" ;
+  	double Velocities(sample) ;
+  		Velocities:Description = "Velocities of the object" ;
+  		Velocities:Unit = "m/s" ;
+
+  // group attributes:
+  		:Boundary\ condition = "PBC" ;
+  		:Number\ of\ samples = 10 ;
+  } // group Trajectories
+}
+=== View file structure with detailed information
+netcdf trajectories {
+
+// global attributes:
+		:_NCProperties = "version=2,netcdf=4.8.1,hdf5=1.10.7" ;
+		:_SuperblockVersion = 2 ;
+		:_IsNetcdf4 = 1 ;
+		:_Format = "netCDF-4" ;
+
+group: Trajectories {
+  dimensions:
+  	sample = 10 ;
+  variables:
+  	int Distances(sample) ;
+  		Distances:Description = "Distances from the origin" ;
+  		Distances:Unit = "m" ;
+  		Distances:_Storage = "contiguous" ;
+  		Distances:_Endianness = "little" ;
+  	double Velocities(sample) ;
+  		Velocities:Description = "Velocities of the object" ;
+  		Velocities:Unit = "m/s" ;
+  		Velocities:_Storage = "contiguous" ;
+  		Velocities:_Endianness = "little" ;
+
+  // group attributes:
+  		:Boundary\ condition = "PBC" ;
+  		:Number\ of\ samples = 10 ;
+  data:
+
+   Distances = 0, 1, 2, 3, 3, 3, 4, 5, 6, 7 ;
+
+   Velocities = 1, 1, 1, 0.5, 0, 0.5, 1, 1, 1, 1 ;
+  } // group Trajectories
+}
+=== View the specified variable
+ncdump: distance: No such variable
+=== View the file format
+netCDF-4
+=== View the specified group
+netcdf trajectories {
+
+group: Trajectories {
+  dimensions:
+  	sample = 10 ;
+  variables:
+  	int Distances(sample) ;
+  		Distances:Description = "Distances from the origin" ;
+  		Distances:Unit = "m" ;
+  	double Velocities(sample) ;
+  		Velocities:Description = "Velocities of the object" ;
+  		Velocities:Unit = "m/s" ;
+
+  // group attributes:
+  		:Boundary\ condition = "PBC" ;
+  		:Number\ of\ samples = 10 ;
+  data:
+
+   Distances = 0, 1, 2, 3, 3, 3, 4, 5, 6, 7 ;
+
+   Velocities = 1, 1, 1, 0.5, 0, 0.5, 1, 1, 1, 1 ;
+  } // group Trajectories
+}
+#+end_example
+
+*** HDF5 utilities
+**** =h5ls=
+#+begin_src shell :session *shell* :results output :exports both
+echo "=== View file structure recursively (-r)"
+h5ls -r trajectories.nc
+echo "=== View group structure"
+h5ls -r trajectories.nc/'Trajectories'
+echo "=== View dataset"
+h5ls -d trajectories.nc/'Trajectories/Distances'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+=== View file structure recursively (-r)
+/                        Group
+/Trajectories            Group
+/Trajectories/Distances  Dataset {10}
+/Trajectories/Velocities Dataset {10}
+/Trajectories/sample     Dataset {10}
+=== View group structure
+/Distances               Dataset {10}
+/Velocities              Dataset {10}
+/sample                  Dataset {10}
+=== View dataset
+Distances                Dataset {10}
+    Data:
+         0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+#+end_example
+
+**** =h5dump=
+#+begin_src shell :session *shell* :results output :exports both
+echo "=== View file structure recursively (-r)"
+h5ls -r trajectories.nc
+echo "=== View group structure"
+h5ls -r trajectories.nc/'Trajectories'
+echo "=== View dataset"
+h5ls -d trajectories.nc/'Trajectories/Distances'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+=== View file structure recursively (-r)
+/                        Group
+/Trajectories            Group
+/Trajectories/Distances  Dataset {10}
+/Trajectories/Velocities Dataset {10}
+/Trajectories/sample     Dataset {10}
+=== View group structure
+/Distances               Dataset {10}
+/Velocities              Dataset {10}
+/sample                  Dataset {10}
+=== View dataset
+Distances                Dataset {10}
+    Data:
+         0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+#+end_example
+
+*** Reading NetCDF files in C
+#+begin_src c :tangle read_netcdf4.c
+#include <netcdf.h>
+#include <stdio.h>
+
+int main(){
+    // Open file
+    int ncid;
+    nc_open("trajectories.nc", NC_NOWRITE, &ncid);
+
+    // Open group
+    int group_id = ncid;
+    nc_inq_grp_ncid(ncid, "Trajectories", &group_id);
+    printf("Group: %s\n", group_id == ncid ? "(root)" : "Trajectories");
+
+    // Get group attributes
+    char gattr1_val[16] = {0};
+    nc_get_att_text(group_id, NC_GLOBAL, "Boundary condition", gattr1_val);
+    printf("Boundary condition: %s\n", gattr1_val);
+
+    int n_samples = 0;
+    nc_get_att_int(group_id, NC_GLOBAL, "Number of samples", &n_samples);
+    printf("Number of samples: %d\n", n_samples);
+
+    // Read variable 1
+    int dist_varid;
+    nc_inq_varid(group_id, "Distances", &dist_varid);
+    char ds1_attr1_val[128] = {0};
+    nc_get_att_text(group_id, dist_varid, "Description", ds1_attr1_val);
+    char ds1_attr2_val[16] = {0};
+    nc_get_att_text(group_id, dist_varid, "Unit", ds1_attr2_val);
+    int distances[10];
+    nc_get_var_int(group_id, dist_varid, distances);
+
+    printf("\nDataset: Distances\n  Description: %s\n  Unit: %s\n",
+           ds1_attr1_val, ds1_attr2_val);
+    for (int i = 0; i < n_samples; i++) {
+        printf("%d ", distances[i]);
+    }
+    printf("\n");
+
+    // Read variable 2
+    int vel_varid;
+    nc_inq_varid(group_id, "Velocities", &vel_varid);
+    char ds2_attr1_val[128] = {0};
+    nc_get_att_text(group_id, vel_varid, "Description", ds2_attr1_val);
+    char ds2_attr2_val[16] = {0};
+    nc_get_att_text(group_id, vel_varid, "Unit", ds2_attr2_val);
+    double velocities[10];
+    nc_get_var_double(group_id, vel_varid, velocities);
+
+    printf("\nDataset: Velocities\n  Description: %s\n  Unit: %s\n",
+           ds2_attr1_val, ds2_attr2_val);
+    for (int i = 0; i < n_samples; i++) {
+        printf("%.1f ", velocities[i]);
+    }
+    printf("\n");
+
+    // Close file
+    nc_close(ncid);
+    return 0;
+}
+#+end_src
+
+#+begin_src shell :session *shell* :results output :exports both
+gcc read_netcdf4.c -lnetcdf -o a.out
+./a.out
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Group: Trajectories
+Boundary condition: PBC
+Number of samples: 10
+
+Dataset: Distances
+  Description: Distances from the origin
+  Unit: m
+0 1 2 3 3 3 4 5 6 7 
+
+Dataset: Velocities
+  Description: Velocities of the object
+  Unit: m/s
+1.0 1.0 1.0 0.5 0.0 0.5 1.0 1.0 1.0 1.0
+#+end_example
+
+* References
+- https://indico3-jsc.fz-juelich.de/event/293/overview
+- https://www.unidata.ucar.edu/software/netcdf
+  - https://docs.unidata.ucar.edu/nug/current/index.html
