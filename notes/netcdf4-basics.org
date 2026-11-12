@@ -177,7 +177,7 @@ ncdump -h trajectories.nc
 echo "=== View file structure with detailed information"
 ncdump -s trajectories.nc
 echo "=== View the specified variable"
-ncdump -v distance trajectories.nc
+ncdump -v Distances trajectories.nc
 echo "=== View the file format"
 ncdump -k trajectories.nc
 echo "=== View the specified group"
@@ -240,7 +240,27 @@ group: Trajectories {
   } // group Trajectories
 }
 === View the specified variable
-ncdump: distance: No such variable
+netcdf trajectories {
+
+group: Trajectories {
+  dimensions:
+  	sample = 10 ;
+  variables:
+  	int Distances(sample) ;
+  		Distances:Description = "Distances from the origin" ;
+  		Distances:Unit = "m" ;
+  	double Velocities(sample) ;
+  		Velocities:Description = "Velocities of the object" ;
+  		Velocities:Unit = "m/s" ;
+
+  // group attributes:
+  		:Boundary\ condition = "PBC" ;
+  		:Number\ of\ samples = 10 ;
+  data:
+
+   Distances = 0, 1, 2, 3, 3, 3, 4, 5, 6, 7 ;
+  } // group Trajectories
+}
 === View the file format
 netCDF-4
 === View the specified group
