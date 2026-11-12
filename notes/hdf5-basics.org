@@ -9,7 +9,7 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport inlineimages
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
-#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
+#+PROPERTY: header-args:python :async yes :python /opt/python/bin/python3
 
 * Overview
 HDF5 (Hierarchical Data Format, Version 5) is an open-source, portable, self-describing data format.
