@@ -13,7 +13,7 @@
 
 * Overview
 HDF5 (Hierarchical Data Format, Version 5) is an open-source, portable, self-describing data format.
-It is widely used in scientific communities as it can store large amounts of data, supports parallel I/Os, and offers APIs in many languages (e.g., C/C++, Fortran, and Python).
+It is widely used in scientific communities as it can store large amounts of data, supports parallel I/O, and offers APIs in many languages (e.g., C/C++, Fortran, and Python).
 
 ** HDF5 objects
 The HDF5 format contain the following data objects:
