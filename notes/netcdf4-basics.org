@@ -164,7 +164,74 @@ int main(){
 - Compile & execute code
 #+begin_src shell :session *shell* :results output :exports both
 gcc create_netcdf4.c -lnetcdf -o a.out
-./a.out"
+./a.out
+ls *.nc
+#+end_src
+
+#+RESULTS:
+: trajectories.nc
+
+*** Creating NetCDF-4 files in Python
+- Import NetCDF4 library
+#+begin_src python :results output :session *python* :exports both :tangle create_netcdf4.py
+import netCDF4
+import numpy as np
+#+end_src
+
+- Define data
+#+begin_src python :results output :session *python* :exports both :tangle create_netcdf4.py
+n_samples = 10
+distances = np.array([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]).astype("i4")
+velocities = np.array([1.0, 1.0, 1.0, 0.5, 0.0, 0.5, 1.0, 1.0, 1.0, 1.0]).astype("f8")
+#+end_src
+
+- Create file
+  - File formats
+    - =NETCDF3_CLASSIC=: CDF-1
+    - =NETCDF3_64BIT_OFFSET=: CDF-2
+    - =NETCDF3_64BIT_DATA=: CDF-5
+    - =NETCDF4_CLASSIC=: NetCDF-4/HDF5 + compatibility with classic data models
+    - =NETCDF4=: NetCDF-4/HDF5
+#+begin_src python :results output :session *python* :exports both :tangle create_netcdf4.py
+file_name = "trajectories.nc"
+ncid = netCDF4.Dataset(file_name, "w", format="NETCDF4")
+#+end_src
+
+- Define metadata & write data (no distinction between define & data mode in Python)
+  - [[https://docs.unidata.ucar.edu/netcdf-c/current/attribute_conventions.html][Attribute_conventions]]
+  - Dimension
+    - =0=: for an unlimited dimension
+#+begin_src python :results output :session *python* :exports both :tangle create_netcdf4.py
+# Group
+group_name = "Trajectories"
+grp = ncid.createGroup(group_name)
+grp.setncattr("Boundary condition", "PBC")
+grp.setncattr("Number of samples", np.array(n_samples).astype('i4'))
+
+# Dimension
+sample_dim = grp.createDimension("sample", n_samples)
+
+# Variable 1
+ds1 = grp.createVariable("Distances", "i4", ("sample",))
+ds1[:] = distances
+ds1.setncattr("Description", "Distances from the origin")
+ds1.Unit = "m"
+
+# Variable 2
+ds2 = grp.createVariable("Velocities", "f8", ("sample",))
+ds2[:] = velocities
+ds2.setncattr("Description", "Velocities of the object")
+ds2.Unit = "m/s"
+#+end_src
+
+- Close file
+#+begin_src python :results output :session *python* :exports both :tangle create_netcdf4.py
+ncid.close()
+#+end_src
+
+- Execute code
+#+begin_src shell :session *shell* :results output :exports both
+python3 create_netcdf4.py
 ls *.nc
 #+end_src
 
@@ -753,6 +820,43 @@ Dataset: Distances
   Description: Distances from the origin
   Unit: m
 0 1 2 3 3 3 4 5 6 7 
+
+Dataset: Velocities
+  Description: Velocities of the object
+  Unit: m/s
+1.0 1.0 1.0 0.5 0.0 0.5 1.0 1.0 1.0 1.0
+#+end_example
+
+*** Reading NetCDF files in Python
+#+begin_src python :results output :session *python* :exports both :tangle read_netcdf4.py
+import netCDF4
+
+with netCDF4.Dataset("trajectories.nc", "r") as ncid:
+    grp = ncid.groups["Trajectories"]
+    for gkey in grp.ncattrs():
+        print(f"{gkey}: {grp.getncattr(gkey)}")
+    print("")
+    for vname, var in grp.variables.items():
+        print(f"Dataset: {vname}")
+        print(f"  Description: {var.getncattr('Description')}")
+        print(f"  Unit: {var.Unit}")
+        print(" ".join(map(str, var[:])))
+        print("")
+#+end_src
+
+#+begin_src shell :session *shell* :results output :exports both
+python3 read_netcdf4.py
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Boundary condition: PBC
+Number of samples: 10
+
+Dataset: Distances
+  Description: Distances from the origin
+  Unit: m
+0 1 2 3 3 3 4 5 6 7
 
 Dataset: Velocities
   Description: Velocities of the object
