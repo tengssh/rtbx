@@ -9,7 +9,7 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport inlineimages
 #+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
-#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
+#+PROPERTY: header-args:python :async yes :python /opt/python/bin/python3
 
 * Overview
 NetCDF (Network Common Data Form) is a set of freely-distributed open source libraries used to create portable, self-describing, and appendable data formats.
@@ -111,6 +111,9 @@ int main(){
 #+end_src
 
 - Define metadata
+  - [[https://docs.unidata.ucar.edu/netcdf-c/current/attribute_conventions.html][Attribute_conventions]]
+  - Dimension
+    - =NC_UNLIMITED=: for an unlimited dimension
 #+begin_src c :tangle create_netcdf4.c
     // Group
     const char group_name[] = "Trajectories";
@@ -151,7 +154,7 @@ int main(){
     nc_put_var_double(group_id, ds2_id, velocities);
 #+end_src
 
-- Close filee
+- Close file
 #+begin_src c :tangle create_netcdf4.c
     status = nc_close(ncid);
     return status;
@@ -320,30 +323,355 @@ Distances                Dataset {10}
 
 **** =h5dump=
 #+begin_src shell :session *shell* :results output :exports both
-echo "=== View file structure recursively (-r)"
-h5ls -r trajectories.nc
-echo "=== View group structure"
-h5ls -r trajectories.nc/'Trajectories'
-echo "=== View dataset"
-h5ls -d trajectories.nc/'Trajectories/Distances'
+echo "=== View header (-H)"
+h5dump -H trajectories.nc
+echo "=== View group (-g)"
+h5dump -g Trajectories trajectories.nc
+echo "=== View dataset (-d)"
+h5dump -d Trajectories/Distances trajectories.nc
 #+end_src
 
 #+RESULTS:
 #+begin_example
-=== View file structure recursively (-r)
-/                        Group
-/Trajectories            Group
-/Trajectories/Distances  Dataset {10}
-/Trajectories/Velocities Dataset {10}
-/Trajectories/sample     Dataset {10}
-=== View group structure
-/Distances               Dataset {10}
-/Velocities              Dataset {10}
-/sample                  Dataset {10}
-=== View dataset
-Distances                Dataset {10}
-    Data:
-         0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+=== View header (-H)
+HDF5 "trajectories.nc" {
+GROUP "/" {
+   ATTRIBUTE "_NCProperties" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 34;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+   }
+   GROUP "Trajectories" {
+      ATTRIBUTE "Boundary condition" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 3;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+      }
+      ATTRIBUTE "Number of samples" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+      }
+      DATASET "Distances" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+         ATTRIBUTE "DIMENSION_LIST" {
+            DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         }
+         ATTRIBUTE "Description" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 25;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "Unit" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 1;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "_Netcdf4Coordinates" {
+            DATATYPE  H5T_STD_I32LE
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         }
+      }
+      DATASET "Velocities" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+         ATTRIBUTE "DIMENSION_LIST" {
+            DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         }
+         ATTRIBUTE "Description" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 24;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "Unit" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 3;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "_Netcdf4Coordinates" {
+            DATATYPE  H5T_STD_I32LE
+            DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         }
+      }
+      DATASET "sample" {
+         DATATYPE  H5T_IEEE_F32BE
+         DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+         ATTRIBUTE "CLASS" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 16;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "NAME" {
+            DATATYPE  H5T_STRING {
+               STRSIZE 64;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+         }
+         ATTRIBUTE "REFERENCE_LIST" {
+            DATATYPE  H5T_COMPOUND {
+               H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+               H5T_STD_I32LE "dimension";
+            }
+            DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+         }
+         ATTRIBUTE "_Netcdf4Dimid" {
+            DATATYPE  H5T_STD_I32LE
+            DATASPACE  SCALAR
+         }
+      }
+   }
+}
+}
+=== View group (-g)
+HDF5 "trajectories.nc" {
+GROUP "Trajectories" {
+   ATTRIBUTE "Boundary condition" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 3;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "PBC"
+      }
+   }
+   ATTRIBUTE "Number of samples" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+      DATA {
+      (0): 10
+      }
+   }
+   DATASET "Distances" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+      DATA {
+      (0): 0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+      }
+      ATTRIBUTE "DIMENSION_LIST" {
+         DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+         DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         DATA {
+         (0): (DATASET 450 "/Trajectories/sample")
+         }
+      }
+      ATTRIBUTE "Description" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 25;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "Distances from the origin"
+         }
+      }
+      ATTRIBUTE "Unit" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 1;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "m"
+         }
+      }
+      ATTRIBUTE "_Netcdf4Coordinates" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         DATA {
+         (0): 0
+         }
+      }
+   }
+   DATASET "Velocities" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+      DATA {
+      (0): 1, 1, 1, 0.5, 0, 0.5, 1, 1, 1, 1
+      }
+      ATTRIBUTE "DIMENSION_LIST" {
+         DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+         DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         DATA {
+         (0): (DATASET 450 "/Trajectories/sample")
+         }
+      }
+      ATTRIBUTE "Description" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 24;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "Velocities of the object"
+         }
+      }
+      ATTRIBUTE "Unit" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 3;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "m/s"
+         }
+      }
+      ATTRIBUTE "_Netcdf4Coordinates" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+         DATA {
+         (0): 0
+         }
+      }
+   }
+   DATASET "sample" {
+      DATATYPE  H5T_IEEE_F32BE
+      DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+      DATA {
+      (0): 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      }
+      ATTRIBUTE "CLASS" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 16;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "DIMENSION_SCALE"
+         }
+      }
+      ATTRIBUTE "NAME" {
+         DATATYPE  H5T_STRING {
+            STRSIZE 64;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "This is a netCDF dimension but not a netCDF variable.        10"
+         }
+      }
+      ATTRIBUTE "REFERENCE_LIST" {
+         DATATYPE  H5T_COMPOUND {
+            H5T_REFERENCE { H5T_STD_REF_OBJECT } "dataset";
+            H5T_STD_I32LE "dimension";
+         }
+         DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+         DATA {
+         (0): {
+               DATASET 895 "/Trajectories/Distances",
+               0
+            },
+         (1): {
+               DATASET 1301 "/Trajectories/Velocities",
+               0
+            }
+         }
+      }
+      ATTRIBUTE "_Netcdf4Dimid" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SCALAR
+         DATA {
+         (0): 0
+         }
+      }
+   }
+}
+}
+=== View dataset (-d)
+HDF5 "trajectories.nc" {
+DATASET "Trajectories/Distances" {
+   DATATYPE  H5T_STD_I32LE
+   DATASPACE  SIMPLE { ( 10 ) / ( 10 ) }
+   DATA {
+   (0): 0, 1, 2, 3, 3, 3, 4, 5, 6, 7
+   }
+   ATTRIBUTE "DIMENSION_LIST" {
+      DATATYPE  H5T_VLEN { H5T_REFERENCE { H5T_STD_REF_OBJECT }}
+      DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+      DATA {
+      (0): (DATASET 450 "/Trajectories/sample")
+      }
+   }
+   ATTRIBUTE "Description" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 25;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "Distances from the origin"
+      }
+   }
+   ATTRIBUTE "Unit" {
+      DATATYPE  H5T_STRING {
+         STRSIZE 1;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "m"
+      }
+   }
+   ATTRIBUTE "_Netcdf4Coordinates" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 1 ) / ( 1 ) }
+      DATA {
+      (0): 0
+      }
+   }
+}
+}
 #+end_example
 
 *** Reading NetCDF files in C
