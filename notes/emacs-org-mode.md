@@ -36,6 +36,7 @@
         - `C-x b`: switch buffer
             - Current working files
             - `*Message*`: check all buffer messages (`q`: leave buffer)
+	    - `*scratch*`: Lisp Interaction Buffers (`C-j`: evaluate Elisp expressions)
         - `C-x s`: save buffer
         - `C-SPC`: set the marker
         - `M-w`: copy
