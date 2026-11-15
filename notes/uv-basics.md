@@ -119,3 +119,6 @@
         ```bash
         uv cache clean
         ```
+
+## References
+- https://github.com/ElioBalestrieri/python-uv-workshop

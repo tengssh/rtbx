@@ -130,3 +130,7 @@
     - [COMMAND]
         - `cache`: remove cached packages
 - [Pixi CLI](https://pixi.prefix.dev/latest/reference/cli/pixi/)
+
+## References
+- https://www.youtube.com/watch?v=SnADYRk-ZZ0
+- https://rgaiacs.github.io/dra-ttt-course-pixi/
