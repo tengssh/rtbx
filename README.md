@@ -102,6 +102,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
 
 ## Learning
 - [MIT OpenCourseWare](https://ocw.mit.edu/)
+- [CMU CS Learn](https://www.cs.cmu.edu/learn/)
 - [FUN MOOC](https://www.fun-mooc.fr/)
 - [edX](https://www.edx.org/)
 - [Coursera](https://www.coursera.org/)
