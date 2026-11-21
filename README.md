@@ -135,7 +135,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [ReproducibiliTea](https://reproducibilitea.org/)
     - [LMU Open Science Center](https://www.osc.lmu.de/index.html)
 - Research Software Engineering
-    - [Software Sustainability Institute](https://www.software.ac.uk/)
+    - [Institute for Research Software](https://www.software.ac.uk/)
     - [Research Software Engineers International](https://researchsoftware.org/)
     - [The Society of Research Software Engineering](https://society-rse.org/)
     - [Nordic-RSE](https://nordic-rse.org/)
