@@ -83,6 +83,7 @@ This is an ongoing collection of tools and resources, gathered for research thro
     - [Zenodo](https://zenodo.org/)
     - [Figshare](https://figshare.com/)
     - [Open Science Framework](https://osf.io/)
+    - [Open Research Europe](https://ore.eu/)
     - [ArXiv](https://arxiv.org/)
     - [HAL](https://hal.science/)
     - [Protocols.io](https://www.protocols.io/)
