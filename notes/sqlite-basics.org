@@ -217,7 +217,6 @@ print("Table exists:", cur.fetchone() is not None)
 : Table exists: False
 
 ** Close connection
-*** Manual
 #+begin_src python :results output :session *python* :exports both
 conn.close()
 #+end_src
