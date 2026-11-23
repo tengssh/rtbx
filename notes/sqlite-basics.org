@@ -1,0 +1,229 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE:       SQLite basics
+#+AUTHOR:      tengssh
+#+LANGUAGE:    en
+#+STARTUP:     indent
+#+TAGS: Python(P)
+#+OPTIONS: toc:3
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport inlineimages
+#+COLUMNS: %25ITEM %TODO %3PRIORITY %TAGS
+#+PROPERTY: header-args:python :async :python /opt/python/bin/python3
+
+* Overview
+[[https://sqlite.org/][SQLite]] is a disk-based, serverless, lightweight SQL database management system written in C. Given its simplicity, SQLite can be used for fast prototyping and testing.
+
+* Installation
+- [[https://www.sqlite.org/download.html][Download SQLite]]
+  
+#+begin_src python :results output :session *python* :exports both
+import sys
+import sqlite3
+print(sys.version)
+print(sqlite3.sqlite_version)
+#+end_src
+
+#+RESULTS:
+: 3.14.6 | packaged by conda-forge | (main, Jul 24 2026, 16:09:24) [GCC 14.3.0]
+: 3.53.4
+
+* Usage
+** Create database
+- Connect to a database (new one if not existed)
+- Create a cursor for executing SQL commands and queries
+#+begin_src python :results output :session *python* :exports both
+import sqlite3
+conn = sqlite3.connect("materials.db")
+cur = conn.cursor()
+#+end_src
+
+#+RESULTS:
+
+- Alternatively, use context manager
+#+begin_src python :results output :session *python* :exports both
+with sqlite3.connect("materials.db") as conn:
+    cur = conn.cursor()
+#+end_src
+
+#+RESULTS:
+
+** Create table
+#+begin_src python :results output :session *python* :exports both
+cur.execute("""
+CREATE TABLE IF NOT EXISTS oxides (
+    id INTEGER PRIMARY KEY,
+    formula TEXT UNIQUE,
+    structure TEXT,
+    band_gap REAL,
+    phase TEXT,
+    method TEXT
+)
+""")
+conn.commit()
+#+end_src
+
+#+RESULTS:
+
+** CRUD operations
+- [NOTE]: Use =?= placeholder for security against SQL injection.
+*** Create
+#+begin_src python :results output :session *python* :exports both
+cur.execute("INSERT INTO oxides (formula, structure, band_gap) VALUES (?, ?, ?)",
+            ("BaTiO3", "perovskite", 3.5))
+conn.commit()
+print(cur.lastrowid)
+
+cur.executemany("INSERT INTO oxides (formula, structure, band_gap) VALUES (?, ?, ?)",
+                [("TiO2", "rutile", 3.0), ("ZnO", "wurtzite", 3.3)])
+conn.commit()
+#+end_src
+
+#+RESULTS:
+: 1
+
+*** Read
+#+begin_src python :results output :session *python* :exports both
+# Fetch one
+cur.execute("SELECT * FROM oxides WHERE formula = ?", ("BaTiO3",))
+print(cur.fetchone())
+
+# Fetch all
+cur.execute("SELECT formula, band_gap FROM oxides WHERE band_gap >= ?", (3.3,))
+for row in cur.fetchall():
+    print(row)
+
+# Count
+cur.execute("SELECT COUNT(*) FROM oxides")
+print(cur.fetchone()[0])
+#+end_src
+
+#+RESULTS:
+: (1, 'BaTiO3', 'perovskite', 3.5, None, None)
+: ('BaTiO3', 3.5)
+: ('ZnO', 3.3)
+: 3
+
+*** Update
+- [[https://sqlite.org/lang_upsert.html][UPSERT]]
+#+begin_src python :results output :session *python* :exports both
+# Update one
+cur.execute("UPDATE oxides SET band_gap = ?, phase = ? WHERE formula = ?",
+            (3.3, "tetragonal", "BaTiO3"))
+conn.commit()
+print(cur.rowcount)
+
+# Update many
+cur.execute("UPDATE oxides SET method = ?", ("DFT",))
+conn.commit()
+print(cur.rowcount)
+
+# Upsert (insert if not exists)
+cur.execute("""
+INSERT INTO oxides (formula, structure, band_gap) VALUES (?, ?, ?)
+ON CONFLICT(formula) DO UPDATE SET structure=excluded.structure, band_gap=excluded.band_gap
+""", ("SiO2", "quartz", 9.0))
+conn.commit()
+cur.execute("SELECT * FROM oxides WHERE formula = ?", ("SiO2",))
+print(cur.fetchone())
+#+end_src
+
+#+RESULTS:
+: 1
+: 3
+: (4, 'SiO2', 'quartz', 9.0, None, None)
+
+*** Delete
+#+begin_src python :results output :session *python* :exports both
+cur.execute("DELETE FROM oxides WHERE formula = ?", ("ZnO",))
+conn.commit()
+print(cur.rowcount)
+
+cur.execute("DELETE FROM oxides WHERE band_gap < ?", (3.1,))
+conn.commit()
+print(cur.rowcount)
+#+end_src
+
+#+RESULTS:
+: 1
+: 1
+
+** Use index
+*** Create index
+- For better query performance
+- [[https://sqlite.org/lang_createindex.html][CREATE INDEX]]
+#+begin_src python :results output :session *python* :exports both
+cur.execute("CREATE INDEX IF NOT EXISTS idx_oxides_band_gap ON oxides (band_gap)")
+conn.commit()
+
+cur.execute("PRAGMA index_list(oxides)")
+for row in cur.fetchall():
+    print(row)
+#+end_src
+
+#+RESULTS:
+: (0, 'idx_oxides_band_gap', 0, 'c', 0)
+: (1, 'sqlite_autoindex_oxides_1', 1, 'u', 0)
+
+*** Drop index
+#+begin_src python :results output :session *python* :exports both
+cur.execute("DROP INDEX IF EXISTS idx_oxides_band_gap")
+conn.commit()
+
+cur.execute("PRAGMA index_list(oxides)")
+for row in cur.fetchall():
+    print(row)
+#+end_src
+
+#+RESULTS:
+: (0, 'sqlite_autoindex_oxides_1', 1, 'u', 0)
+
+** Explain query plan
+- [[https://sqlite.org/eqp.html][EXPLAIN QUERY PLAN]]
+- Output field descriptions
+  - 1st field: integer node id (integer)
+  - 2nd field: integer parent id (integer)
+  - 3rd field: unused auxiliary field (integer)
+  - 4th field: description of the node (string)
+#+begin_src python :results output :session *python* :exports both
+cur.execute("EXPLAIN QUERY PLAN SELECT * FROM oxides WHERE formula = ?", ("BaTiO3",))
+for row in cur.fetchall():
+    print(row)
+
+cur.execute("EXPLAIN QUERY PLAN SELECT * FROM oxides WHERE band_gap > 3.0")
+for row in cur.fetchall():
+    print(row)
+#+end_src
+
+#+RESULTS:
+: (3, 0, 39, 'SEARCH oxides USING INDEX sqlite_autoindex_oxides_1 (formula=?)')
+: (2, 0, 216, 'SCAN oxides')
+
+** Drop table
+- [[https://sqlite.org/lang_droptable.html][DROP TABLE]]
+#+begin_src python :results output :session *python* :exports both
+cur.execute("DROP TABLE IF EXISTS oxides")
+conn.commit()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session *python* :exports both
+cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='oxides'")
+print("Table exists:", cur.fetchone() is not None)
+#+end_src
+
+#+RESULTS:
+: Table exists: False
+
+** Close connection
+*** Manual
+#+begin_src python :results output :session *python* :exports both
+conn.close()
+#+end_src
+
+#+RESULTS:
+
+* References
+- https://sqlite.org/docs.html
+- https://docs.python.org/3/library/sqlite3.html
